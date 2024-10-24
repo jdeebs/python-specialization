@@ -7,7 +7,7 @@ This directory contains the files and deliverables for Exercise 1.2 of my Python
    - Created a structure named `recipe_1` using a dictionary to store details for a cup of tea, including its name, cooking time, and a list of ingredients.
 
 2. **Choosing a Data Structure**:
-   - Used a **dictionary** for `recipe_1` as it allows easy access to the recipe’s attributes by key, making it intuitive to store structured data (name, cooking time, ingredients).
+   - Used a dictionary for `recipe_1` as it allows easy access to the recipe’s attributes by key, making it intuitive to store structured data (name, cooking time, ingredients).
 
 3. **All Recipes Structure**:
    - Created a list called `all_recipes` to store multiple recipe dictionaries, as lists are ideal for storing ordered collections where we may need to add or modify recipes later.
@@ -22,7 +22,7 @@ This directory contains the files and deliverables for Exercise 1.2 of my Python
    - Uploaded all exercise deliverables, including this README, screenshots of each step, and the learning journal to a GitHub repository.
 
 ## Files in this Directory:
-- Screenshots documenting the process (Step 1, Step 2, etc.).
+- Screenshots documenting the process.
 - Learning journal documenting my experience and reflections from this exercise.
 
 ## Learning Journal:
