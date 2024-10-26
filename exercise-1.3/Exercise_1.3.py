@@ -30,6 +30,7 @@ def take_recipe():
 
 n = int(input("How many recipes would you like to enter?: "))
 
+# Prompt for amount of new recipes based on what the user entered
 for _ in range(n):
     # Run take_recipe and store its output
     recipe = take_recipe()
@@ -40,3 +41,17 @@ for _ in range(n):
     
     # Append the recipe to recipes_list
     recipes_list.append(recipe)
+
+    # Conditionally set cooking difficulty based on cooking time and ingredients
+    for recipe in recipes_list:
+        if recipe['cooking_time'] < 10 and len(recipe['ingredients']) < 4:
+            difficulty = "Easy"
+        elif recipe['cooking_time'] < 10 and len(recipe['ingredients']) >= 4:
+            difficulty = "Medium"
+        elif recipe['cooking_time'] >= 10 and len(recipe['ingredients']) < 4:
+            difficulty = "Intermediate"
+        elif recipe['cooking_time'] >= 10 and len(recipe['ingredients']) >= 4:
+            difficulty = "Hard"
+
+    # Add difficulty to recipe dictionary item
+    recipe['difficulty'] = difficulty
