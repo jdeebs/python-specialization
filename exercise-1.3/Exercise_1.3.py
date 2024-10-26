@@ -39,20 +39,26 @@ for _ in range(n):
         if ingredient not in ingredients_list:
             ingredients_list.append(ingredient)
 
-    # Conditionally set cooking difficulty based on cooking time and ingredients
-    for recipe in recipes_list:
-        if recipe['cooking_time'] < 10 and len(recipe['ingredients']) < 4:
-            difficulty = "Easy"
-        elif recipe['cooking_time'] < 10 and len(recipe['ingredients']) >= 4:
-            difficulty = "Medium"
-        elif recipe['cooking_time'] >= 10 and len(recipe['ingredients']) < 4:
-            difficulty = "Intermediate"
-        elif recipe['cooking_time'] >= 10 and len(recipe['ingredients']) >= 4:
-            difficulty = "Hard"
-
-    # Add difficulty to recipe dictionary item
-    recipe['difficulty'] = difficulty
-    
     # Append the recipe to recipes_list
     recipes_list.append(recipe)
 
+# Conditionally set cooking difficulty based on cooking time and ingredients
+for recipe in recipes_list:
+    if recipe['cooking_time'] < 10 and len(recipe['ingredients']) < 4:
+        difficulty = "Easy"
+    elif recipe['cooking_time'] < 10 and len(recipe['ingredients']) >= 4:
+        difficulty = "Medium"
+    elif recipe['cooking_time'] >= 10 and len(recipe['ingredients']) < 4:
+        difficulty = "Intermediate"
+    elif recipe['cooking_time'] >= 10 and len(recipe['ingredients']) >= 4:
+        difficulty = "Hard"
+
+    # Add difficulty to recipe dictionary item
+    recipe['difficulty'] = difficulty
+
+print("Recipe: " + recipes_list['name'],
+      "Cooking Time (min): " + recipes_list['cooking_time'],
+      "Ingredients: ",
+      recipes_list['ingredients'],
+      "Difficulty level: " + recipes_list['difficulty']
+      )
