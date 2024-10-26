@@ -26,3 +26,17 @@ def take_recipe():
         'cooking_time': cooking_time,
         'ingredients': ingredients
     }
+    return recipe
+
+n = int(input("How many recipes would you like to enter?: "))
+
+for _ in range(n):
+    # Run take_recipe and store its output
+    recipe = take_recipe()
+
+    for ingredient in recipe['ingredients']:
+        if ingredient not in ingredients_list:
+            ingredients_list.append(ingredient)
+    
+    # Append the recipe to recipes_list
+    recipes_list.append(recipe)
