@@ -56,9 +56,17 @@ for recipe in recipes_list:
     # Add difficulty to recipe dictionary item
     recipe['difficulty'] = difficulty
 
-print("Recipe: " + recipes_list['name'],
-      "Cooking Time (min): " + recipes_list['cooking_time'],
-      "Ingredients: ",
-      recipes_list['ingredients'],
-      "Difficulty level: " + recipes_list['difficulty']
-      )
+print("All Recipe Details: ")
+# Print each recipe's details
+for recipe in recipes_list:
+
+    # Format ingredients on new line
+    ingredients_formatted = '\n'.join(recipe['ingredients'])
+
+    recipe_details = (
+        f"Recipe: {recipe['name']}\n"
+        f"Cooking Time (min): {recipe['cooking_time']}\n"
+        f"Ingredients:\n{ingredients_formatted}\n"
+        f"Difficulty level: {recipe['difficulty']}\n"
+    )
+    print(recipe_details)
