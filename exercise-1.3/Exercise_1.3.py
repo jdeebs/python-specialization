@@ -56,7 +56,7 @@ for recipe in recipes_list:
     # Add difficulty to recipe dictionary item
     recipe['difficulty'] = difficulty
 
-print("All Recipe Details: ")
+print("\nAll Recipe Details:\n")
 # Print each recipe's details
 for recipe in recipes_list:
 
