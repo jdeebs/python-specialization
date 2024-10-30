@@ -53,14 +53,14 @@ class Date(object):
         # If none of the above statements are triggered
         return True
 
-# Create an instance of Date as an object
-first_moon_landing = Date(20, 7, 1969)
+# Initialize Date objects with some having erroneous values for testing
+date1 = Date(11, 11, 1993)
+# Invalid since it's not a leap year
+date2 = Date(29, 2, 2001)
+# Invalid with incorrect inputs
+date3 = Date('abc', 'def', 'ghi')
 
-# Print the date with a getter function
-print(first_moon_landing.get_date())
-
-# Change the date with setter function
-first_moon_landing.set_date()
-
-# Print modified date
-print(first_moon_landing.get_date())
+# Validate each object with is_valid_date() method
+print(str(date1.get_date()) + ": " + str(date1.is_valid_date()))
+print(str(date2.get_date()) + ": " + str(date2.is_valid_date()))
+print(str(date3.get_date()) + ": " + str(date3.is_valid_date()))
