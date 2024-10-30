@@ -32,6 +32,7 @@ def take_recipe():
         'cooking_time': cooking_time,
         'ingredients': ingredients
     }
+    print(f"Recipe '{name}' added.")
     return recipe
 
 n = int(input("How many recipes would you like to enter?: "))
@@ -66,20 +67,20 @@ def calc_difficulty():
 # Call function to calculate difficulty and append it to recipe
 calc_difficulty()
 
-filename = input("Enter the filename where you've stored your recipes: ")
+filename = input("Enter an existing filename or create a new file to save your recipes: ")
 try:
     # Open file in binary read mode
     with open(filename, 'rb') as file:
         # Attempt to load data from file
         data = pickle.load(file)
-        print("Data loaded successfully.")
+        print(f"Data loaded successfully from {filename}.")
 except FileNotFoundError:
     # If file doesn't exist, initialize with empty lists
     data = {
         'recipes_list': [],
         'all_ingredients': []
         }
-    print("File not found.")
+    print(f"File not found. A new file was created ({filename}).")
 except:
     print("An unexpected error occurred.")
 else:
@@ -94,4 +95,4 @@ finally:
     with open(filename, 'wb') as file:
         pickle.dump(data, file)
 
-    print("Data saved successfully!")
+    print("Data saved successfully! Goodbye.")

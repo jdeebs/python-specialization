@@ -19,7 +19,7 @@ def search_ingredient(data):
         print(f"{index}: {ingredient}")
     try:
         # Get user input for index parsing
-        ingredient_index = int(input("Pick a number to select your ingredient: "))
+        ingredient_index = int(input("\nPick a number to select your ingredient: "))
         # Get ingredient based on index
         ingredient_searched = data['all_ingredients'][ingredient_index]
     except:
@@ -41,3 +41,4 @@ except:
     print("An unexpected error occurred.")
 else:
     search_ingredient(data)
+    print("\nSearch concluded. Goodbye.")
