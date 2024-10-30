@@ -9,7 +9,7 @@ def display_recipe(recipe):
         f"Recipe: {recipe['name']}\n"
         f"Cooking Time (min): {recipe['cooking_time']}\n"
         f"Ingredients:\n{ingredients_formatted}\n"
-        f"Difficulty level: {recipe['difficulty']}\n"
+        f"Difficulty level: {recipe['difficulty']}"
     )
     print(recipe_details)
 
@@ -26,7 +26,7 @@ def search_ingredient(data):
         # Handle input errors
         print("Input is incorrect")
     else:
-        print("Recipes that include the selected ingredient:")
+        print(f"Recipes that include {ingredient_searched.lower()}:")
         # Iterate through all recipes to find and print the formatted matches with display_recipe function
         for recipe in data['recipes_list']:
             if ingredient_searched in recipe['ingredients']:
