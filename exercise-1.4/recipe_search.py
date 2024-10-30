@@ -5,6 +5,7 @@ def display_recipe(recipe):
     ingredients_formatted = "\n".join(recipe['ingredients'])
 
     recipe_details = (
+        f"--------------------------\n"
         f"Recipe: {recipe['name']}\n"
         f"Cooking Time (min): {recipe['cooking_time']}\n"
         f"Ingredients:\n{ingredients_formatted}\n"
@@ -25,7 +26,18 @@ def search_ingredient(data):
         # Handle input errors
         print("Input is incorrect")
     else:
-        # Iterate through all recipes to find and print matches
+        print("Recipes that include the selected ingredient:")
+        # Iterate through all recipes to find and print the formatted matches with display_recipe function
         for recipe in data['recipes_list']:
             if ingredient_searched in recipe['ingredients']:
-                print(recipe)
+                display_recipe(recipe)
+
+filename = input("Enter the filename where you've stored your recipes: ")
+try:
+    with open(filename, 'rb') as file:
+        data = pickle.load(file)
+        print("Data loaded successfully!")
+except:
+    print("An unexpected error occurred.")
+else:
+    search_ingredient(data)
