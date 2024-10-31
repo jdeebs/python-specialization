@@ -12,7 +12,7 @@ class ShoppingList(object):
         except:
             print(f"Error adding '{item}' to the shopping list. Make sure '{item}' isn't already on the list.")
         else:
-            print(f"'{item}' added to the shopping list.")
+            print(f"'{item}' added to the {self.list_name} shopping list.")
     
     def remove_item(self, item):
         try:
@@ -23,11 +23,14 @@ class ShoppingList(object):
         except:
             print(f"Error removing '{item}' from the shopping list.")
         else:
-            print(f"'{item}' removed from the shopping list.")
+            print(f"'{item}' removed from the {self.list_name} shopping list.")
     
     def view_list(self):
-        print(self.list_name)
-        print(self.shopping_list)
+        print("\n" + self.list_name)
+        print("------------------------------")
+        # Format shopping list with a new line per item
+        shopping_list_formatted = "\n - ".join(self.shopping_list)
+        print(" - " + shopping_list_formatted)
 
     def merge_lists(self, obj):
         # Create name for new merged shopping list
@@ -47,8 +50,8 @@ class ShoppingList(object):
         # Returns merged list
         return merged_lists_obj
 
-pet_store_list = ShoppingList("Pet Store Shopping List")
-grocery_store_list = ShoppingList("Grocery Store List")
+pet_store_list = ShoppingList("Pet Store")
+grocery_store_list = ShoppingList("Grocery Store")
 
 # Use loop to add items to each list
 for item in ['dog food', 'frisbee', 'bowl', 'collars', 'flea collars']:
