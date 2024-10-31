@@ -29,15 +29,34 @@ class ShoppingList(object):
         print(self.list_name)
         print(self.shopping_list)
 
+    def merge_lists(self, obj):
+        # Create name for new merged shopping list
+        merged_lists_name = 'Merged List - ' + str(self.list_name) + " + " + str(obj.list_name)
+
+        # Initialize new ShoppingList object with the new name that will store the merged items
+        merged_lists_obj = ShoppingList(merged_lists_name)
+
+        # Copy the items from the first list (self) into the new list
+        merged_lists_obj.shopping_list = self.shopping_list.copy()
+
+        # Iterate over each item in second list (obj) and check whether item exists in first list
+        # If not present, append it to the first list, this ensures no duplicate items
+        for item in obj.shopping_list:
+            if not item in merged_lists_obj.shopping_list:
+                merged_lists_obj.shopping_list.append(item)
+        # Returns merged list
+        return merged_lists_obj
+
 pet_store_list = ShoppingList("Pet Store Shopping List")
+grocery_store_list = ShoppingList("Grocery Store List")
 
-pet_store_list.add_item("dog food")
-pet_store_list.add_item("frisbee")
-pet_store_list.add_item("bowl")
-pet_store_list.add_item("collars")
-pet_store_list.add_item("flea collars")
+# Use loop to add items to each list
+for item in ['dog food', 'frisbee', 'bowl', 'collars', 'flea collars']:
+    pet_store_list.add_item(item)
+for item in ['fruits', 'vegetables', 'bowl', 'ice cream']:
+    grocery_store_list.add_item(item)
 
-pet_store_list.remove_item("flea collars") # Test removal
-pet_store_list.add_item("frisbee") # Test no duplicate items
+# Merge the two lists together, since the merge_lists() method returns another ShoppingList it must be assigned to a new object (merged_list)
+merged_list = ShoppingList.merge_lists(pet_store_list, grocery_store_list)
 
-pet_store_list.view_list()
+merged_list.view_list()
