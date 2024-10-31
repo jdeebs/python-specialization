@@ -10,7 +10,7 @@ class ShoppingList(object):
             else:
                 raise ValueError(f"'{item}' is already in the shopping list.")
         except:
-            print("Error adding item to shopping list.")
+            print(f"Error adding '{item}' to the shopping list. Make sure '{item}' isn't already on the list.")
         else:
             print(f"'{item}' added to the shopping list.")
     
@@ -21,7 +21,7 @@ class ShoppingList(object):
             else:
                 raise ValueError(f"'{item}' not found in the shopping list.")
         except:
-            print("Error removing item from shopping list.")
+            print(f"Error removing '{item}' from the shopping list.")
         else:
             print(f"'{item}' removed from the shopping list.")
     
