@@ -63,19 +63,35 @@ class Recipe(object):
             )
         print(recipe_details)
     
-    def recipe_search(self, data, search_term):
+    @classmethod
+    def recipe_search(cls, data, search_term):
         # Iterate over each recipe
         for recipe in data:
             # If search_ingredient() returns true, display that recipe
             if recipe.search_ingredient(search_term):
                 recipe.display_recipe()
 
+# Define recipes
 tea = Recipe("Tea", "Tea Leaves", "Sugar", "Water", cooking_time=5)
 coffee = Recipe("Coffee", "Coffee Powder", "Sugar", "Water", cooking_time=5)
 cake = Recipe("Cake", "Sugar", "Butter", "Eggs", "Vanilla Essence", "Flour", "Baking Powder", "Milk", cooking_time=50)
 banana_smoothie = Recipe("Banana Smoothie", "Bananas", "Milk", "Peanut Butter", "Sugar", "Ice Cubes", cooking_time=5)
 
+# Display recipes
 tea.display_recipe()
 coffee.display_recipe()
 cake.display_recipe()
 banana_smoothie.display_recipe()
+
+# Wrap the recipes into a list
+recipes_list = [tea, coffee, cake, banana_smoothie]
+
+# Search for recipes that contain specific ingredients
+print("\nRecipes containing 'Water':")
+Recipe.recipe_search(recipes_list, "Water")
+
+print("\nRecipes containing 'Sugar':")
+Recipe.recipe_search(recipes_list, "Sugar")
+
+print("\nRecipes containing 'Bananas':")
+Recipe.recipe_search(recipes_list, "Bananas")
