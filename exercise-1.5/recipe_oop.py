@@ -6,7 +6,7 @@ class Recipe(object):
         self.name = name
         self.ingredients = list(ingredients) # Variable-length list
         self.cooking_time = cooking_time
-        self.calculate_difficulty(cooking_time, ingredients)
+        self.difficulty = self.calculate_difficulty(cooking_time, ingredients)
 
     # Methods
     def get_name(self):
@@ -19,11 +19,7 @@ class Recipe(object):
         return self.ingredients
     
     def get_difficulty(self):
-        if self.difficulty is None:
-            self.calculate_difficulty(self.cooking_time, self.ingredients)
             return self.difficulty
-        else:
-            print("Error getting recipe difficulty.")
     
     def add_ingredients(self, *ingredients):
         self.ingredients.extend(ingredients)
@@ -38,9 +34,13 @@ class Recipe(object):
             difficulty = "Intermediate"
         elif cooking_time >= 10 and len(ingredients) >= 4:
             difficulty = "Hard"
+        else:
+            difficulty = None
 
         # Update difficulty based on above conditions
         self.difficulty = difficulty
+        return difficulty
+
 
     def search_ingredient(self, ingredient):
         return ingredient in self.ingredients
@@ -51,7 +51,7 @@ class Recipe(object):
                 Recipe.all_ingredients.append(ingredient)
     
     def display_recipe(self):
-    # Format ingredients list with a new line per ingredient
+        # Format ingredients list with a new line per ingredient
         ingredients_formatted = "\n".join(self.ingredients)
 
         recipe_details = (
@@ -71,4 +71,11 @@ class Recipe(object):
                 recipe.display_recipe()
 
 tea = Recipe("Tea", "Tea Leaves", "Sugar", "Water", cooking_time=5)
+coffee = Recipe("Coffee", "Coffee Powder", "Sugar", "Water", cooking_time=5)
+cake = Recipe("Cake", "Sugar", "Butter", "Eggs", "Vanilla Essence", "Flour", "Baking Powder", "Milk", cooking_time=50)
+banana_smoothie = Recipe("Banana Smoothie", "Bananas", "Milk", "Peanut Butter", "Sugar", "Ice Cubes", cooking_time=5)
+
 tea.display_recipe()
+coffee.display_recipe()
+cake.display_recipe()
+banana_smoothie.display_recipe()
