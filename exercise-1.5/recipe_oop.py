@@ -6,7 +6,7 @@ class Recipe(object):
         self.name = name
         self.ingredients = list(ingredients) # Variable-length list
         self.cooking_time = cooking_time
-        self.calculate_difficulty()
+        self.calculate_difficulty(cooking_time, ingredients)
 
     # Methods
     def get_name(self):
@@ -70,3 +70,5 @@ class Recipe(object):
             if recipe.search_ingredient(search_term):
                 recipe.display_recipe()
 
+tea = Recipe("Tea", "Tea Leaves", "Sugar", "Water", cooking_time=5)
+tea.display_recipe()
