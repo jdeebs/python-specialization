@@ -2,11 +2,11 @@ class Recipe(object):
     # Class variable to store all ingredients
     all_ingredients = []
     # Init attributes
-    def __init__(self, name, *ingredients, cooking_time, difficulty):
+    def __init__(self, name, *ingredients, cooking_time):
         self.name = name
         self.ingredients = list(ingredients) # Variable-length list
         self.cooking_time = cooking_time
-        self.difficulty = difficulty
+        self.calculate_difficulty()
 
     # Methods
     def get_name(self):
@@ -69,3 +69,4 @@ class Recipe(object):
             # If search_ingredient() returns true, display that recipe
             if recipe.search_ingredient(search_term):
                 recipe.display_recipe()
+
