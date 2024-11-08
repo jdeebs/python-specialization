@@ -62,7 +62,24 @@ def create_recipe(conn, cursor):
     print("Recipe added!")
 
 def search_recipe(conn, cursor):
-    return
+    # Store entire ingredients column w/ tuples on each row containing specific recipe ingredients
+    results = cursor.execute("SELECT ingredients FROM Recipes")
+    # Use a set to handle duplicates
+    all_ingredients = set()
+
+    # Iterate over each row in ingredients column
+    for row in results:
+        # Split the string by comma and space to get individual ingredients
+        ingredients = row[0].split(", ")
+        # Add each ingredient to the set, ignoring duplicates
+        all_ingredients.update(ingredients)
+
+    all_ingredients = list(all_ingredients)
+
+    """
+Display all the ingredients that you've found so far to the user, and allow them to pick a number corresponding to the ingredient in order to begin a search. Store the ingredient to be searched for into a variable called search_ingredient.
+To search for rows in the table that contain search_ingredient within the ingredients column, use the WHERE statement with the LIKE operator: SELECT <columns to be displayed> FROM <table> WHERE <search column> LIKE <search pattern>.
+    """
 
 def update_recipe(conn, cursor):
     return
