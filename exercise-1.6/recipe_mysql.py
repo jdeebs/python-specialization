@@ -40,11 +40,13 @@ def create_recipe(conn, cursor):
     ingredients = []
     print("Enter ingredients one by one (type 'done' to finish): ")
     # Append each ingredient until user types done
+    # Capitalize each ingredient
     while True:
         ingredient = str(input("Ingredient: "))
+        ingredient_capitalized = ingredient.capitalize()
         if ingredient.lower() == 'done':
             break
-        ingredients.append(ingredient)
+        ingredients.append(ingredient_capitalized)
 
     # Convert ingredients list to a comma separated string
     ingredients_string = ", ".join(ingredients)
@@ -71,10 +73,12 @@ def search_recipe(conn, cursor):
     all_ingredients = set()
     # Iterate over each row in ingredients column
     for row in results:
-        # Split the string by comma and space to get individual ingredients
-        ingredients = row[0].split(", ")
-        # Add each ingredient to the set, ignoring duplicates
-        all_ingredients.update(ingredients)
+        # Check for non-empty values
+        if row[0]:
+            # Split the string by comma and space to get individual ingredients
+            ingredients = row[0].split(", ")
+            # Add each ingredient to the set, ignoring duplicates
+            all_ingredients.update(ingredients)
 
     all_ingredients = list(all_ingredients)
 
