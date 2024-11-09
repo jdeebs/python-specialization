@@ -60,6 +60,7 @@ def create_recipe(conn, cursor):
     # Commit to save changes
     conn.commit()
     print("Recipe added!")
+    return
 
 def search_recipe(conn, cursor):
     # Store entire ingredients column w/ tuples on each row containing specific recipe ingredients
@@ -81,14 +82,19 @@ def search_recipe(conn, cursor):
     # Display all ingredients with indexes
     for index, ingredient in enumerate(all_ingredients):
         print(f"{index}: {ingredient}")
+    # Get user input for index parsing
+    user_input = input("\nPick a number to select an ingredient or type 'quit' to exit: ")
+
+    if user_input == 'quit':
+        return
+    
     try:
-        # Get user input for index parsing
-        ingredient_index = int(input("\nPick a number to select ingredient: "))
+        ingredient_index = int(user_input)
         # Get ingredient based on index
         search_ingredient = all_ingredients[ingredient_index]
     except:
         # Handle input errors
-        print("Input is incorrect")
+        print("Input is incorrect. Please enter a valid number or type 'quit' to exit.")
         return
     
     # Search for rows in the table that contain search_ingredient
@@ -110,6 +116,7 @@ def search_recipe(conn, cursor):
             print(f"Difficulty: {difficulty}\n")
     else:
         print(f"No recipes found containing '{search_ingredient}'.")
+        return
 
 def update_recipe(conn, cursor):
     # Store all recipes
@@ -172,7 +179,7 @@ def update_recipe(conn, cursor):
     else:
         print("Invalid choice.")
         return
-    
+
     # Update query for the chosen column
     query = f"UPDATE Recipes SET {column} = %s WHERE id = %s"
     cursor.execute(query, (new_value, recipe_id))
@@ -193,6 +200,7 @@ def update_recipe(conn, cursor):
         cursor.execute("UPDATE Recipes SET difficulty = %s WHERE id = %s", (new_difficulty, recipe_id))
         conn.commit()
         print("Recipe difficulty updated.")
+    return
 
 def delete_recipe(conn, cursor):
     # Store all recipes
@@ -238,30 +246,32 @@ def calculate_difficulty(cooking_time, ingredients):
         print("Something went wrong calculating recipe difficulty!")
 
 def main_menu():
-    while(choice != "quit"):
-        print("What would you like to do? Pick a choice!")
-        print("1. Add recipe")
-        print("2. Search for a recipe")
-        print("3. Edit recipe")
-        print("4. Delete recipe")
-        print("Type 'quit' to exit the program.")
-        choice = input("Your choice: ")
+    print("What would you like to do?\nEnter the number 1-4 or type 'quit' to exit the program.")
+    print("1. Add recipe")
+    print("2. Search for a recipe")
+    print("3. Edit recipe")
+    print("4. Delete recipe")
+    choice = input("Your choice: ")
 
+    while(choice != "quit"):
         if choice == "1":
-            create_recipe()
+            create_recipe(conn, cursor)
+            return
         elif choice == "2":
-            search_recipe()
+            search_recipe(conn, cursor)
+            return
         elif choice == "3":
-            update_recipe()
+            update_recipe(conn, cursor)
+            return
         elif choice == "4":
-            delete_recipe()
+            delete_recipe(conn, cursor)
+            return
         elif choice == "quit":
+            conn.close()
             break
         else:
             print("Invalid input. Please try again.")
             continue
-
-# main_menu(conn, cursor)
 
 # Sample data for testing
 def setup_sample_data(cursor, conn):
@@ -302,4 +312,5 @@ def run_tests(conn, cursor):
     test_delete_recipe(conn, cursor)
     print("All tests completed successfully!")
 
-run_tests(conn, cursor)
+# run_tests(conn, cursor)
+main_menu()
