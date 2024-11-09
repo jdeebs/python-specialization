@@ -247,16 +247,24 @@ def delete_recipe(conn, cursor):
     for recipe in all_recipes:
         print(f"ID: {recipe[0]}, Name: {recipe[1]}")
 
-    # Get recipe ID to delete from user
-    try:
-        recipe_id = int(input("Enter the ID of the recipe you want to DELETE: "))
-    except ValueError:
-        print("Invalid input. Please enter a valid integer ID.")
-        return
-    # Check if the user input ID matches any of the recipe IDs
-    if not any(recipe[0] == recipe_id for recipe in all_recipes):
-        print("Invalid Recipe ID.")
-        return
+    while True:
+        # Get recipe ID to delete from user
+        try:
+            recipe_id = input("Enter the ID of the recipe you want to DELETE or type 'quit' to exit: ")
+            if recipe_id == 'quit':
+                return
+            else:
+                recipe_id = int(recipe_id)
+        except ValueError:
+            print("Invalid input. Please enter a valid ID.")
+            continue
+        
+        # Check if the user input ID matches any of the recipe IDs
+        if any(recipe[0] == recipe_id for recipe in all_recipes):
+            break
+        if not any(recipe[0] == recipe_id for recipe in all_recipes):
+            print("Please enter an existing Recipe ID.")
+            continue
     # Query to delete recipe matching user input ID
     query = '''DELETE FROM Recipes WHERE id = %s
     '''
