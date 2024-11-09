@@ -80,7 +80,7 @@ def search_recipe(conn, cursor):
 
     # Check if list of ingredients is empty and exit if true
     if len(all_ingredients) == 0:
-        print("No ingredients found.")
+        print("No ingredients found. Returning to main menu.")
         return
     
     print("\nAll recipe ingredients:")
@@ -128,6 +128,11 @@ def update_recipe(conn, cursor):
     # Store all recipes
     cursor.execute("SELECT id, name FROM Recipes")
     all_recipes = cursor.fetchall()
+
+    # Check if list of recipes is empty and exit if true
+    if len(all_recipes) == 0:
+        print("No recipes found. Returning to main menu.")
+        return
 
     print("\nAll recipes:")
     # Display all recipes with their IDs and name
