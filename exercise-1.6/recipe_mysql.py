@@ -218,6 +218,11 @@ def delete_recipe(conn, cursor):
     cursor.execute("SELECT id, name FROM Recipes")
     all_recipes = cursor.fetchall()
 
+    # Check if list of recipes is empty and exit if true
+    if len(all_recipes) == 0:
+        print("No recipes found. Returning to main menu.")
+        return
+
     print("\nAll recipes:")
     # Display all recipes with their IDs and name
     for recipe in all_recipes:
