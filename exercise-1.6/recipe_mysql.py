@@ -174,10 +174,11 @@ def update_recipe(conn, cursor):
     # Prompt for valid recipe ID
     while True:
         # Get recipe ID from user
-        recipe_id = input("Enter the ID of the recipe to update: ")
-
+        recipe_id = input("Enter the ID of the recipe to update or type 'quit' to exit: ")
+        if recipe_id == 'quit':
+            return
         # Check if the user input ID matches any of the recipe IDs
-        if any(str(recipe[0]) == recipe_id for recipe in all_recipes):
+        elif any(str(recipe[0]) == recipe_id for recipe in all_recipes):
             break
         else:
             print("Invalid recipe ID. Please try again.")
@@ -198,21 +199,34 @@ def update_recipe(conn, cursor):
         new_value = input("Enter the new name for the recipe: ")
         new_value = new_value.title()
         try:
+            if new_value == '':
+                print("Name cannot be empty. Returning to main menu.")
+                return
             new_value = str(new_value)
             print(f"Recipe name updated to {new_value}.")
             print("\n---------------------------\n")
         except ValueError:
-            print("Invalid name.")
+            print("Invalid name. Returning to main menu.")
             return
     elif column_to_update == "2":
         column = "cooking_time"
         new_value = input("Enter the new cooking time (in minutes): ")
+
         try:
+            # Convert input to an integer first
             new_value = int(new_value)
+
+            # Check if the cooking time is greater than 0
+            if new_value <= 0:
+                print("Cooking time must be greater than 0 minutes. Returning to main menu.")
+                return
+            
+            # If valid, print the success message
             print(f"Recipe cooking time updated to {new_value} minutes.")
             print("\n---------------------------\n")
+            
         except ValueError:
-            print("Invalid cooking time.")
+            print("Invalid cooking time. Please enter a valid integer value for cooking time. Returning to main menu.")
             return
     elif column_to_update == "3":
         column = "ingredients"
