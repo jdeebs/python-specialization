@@ -33,28 +33,25 @@ def create_recipe(conn, cursor):
     print("Enter your recipe info")
 
     # Get user input for name and cooking time
-    # Capitalize name using title
-    # this is an example -> This Is An Example
-    try:
-        while True:
-            name = input("Recipe name: ").strip().title()
-            if not name:
-                print("Recipe name cannot be empty. Please enter a valid name.")
-                continue
-            try:
-                cooking_time = int(input("Cooking time (in minutes): "))
-                if cooking_time <= 0:
-                    print("Cooking time must be a positive integer.")
-                    continue
-            except ValueError:
-                print("Invalid input. Please enter a number for cooking time.")
-                continue
 
-            # Break if name and cooking time are valid
+    # Get and validate recipe name
+    while True:
+        name = input("Recipe name: ").strip().title()
+        if name:
             break
-    except:
-        print("Something went wrong. Returning to main menu.")
-        return
+        else:
+            print("Recipe name cannot be empty. Please enter a valid name.")
+
+    # Get and validate cooking time
+    while True:
+        try:
+            cooking_time = int(input("Cooking time (in minutes): "))
+            if cooking_time > 0:
+                break
+            else:
+                print("Cooking time must be a positive integer.")
+        except ValueError:
+            print("Invalid input. Please enter a number for cooking time.")
 
     # Get ingredients as a list
     ingredients = []
@@ -74,7 +71,8 @@ def create_recipe(conn, cursor):
 
     # Check if no ingredients were entered
     if not ingredients:
-        print("No ingredients entered. Returning to main menu.")
+        print("No ingredients entered, recipe was not saved.\nReturning to main menu.")
+        print("\n---------------------------\n")
         return
     # Convert ingredients list to a comma separated string
     ingredients_string = ", ".join(ingredients)
@@ -230,17 +228,16 @@ def update_recipe(conn, cursor):
             new_value = ", ".join(ingredients)
         except ValueError:
             print("Error adding ingredients.")
+            print("\n---------------------------\n")
             return
     else:
-        print("Invalid choice.")
+        print("Invalid choice. Returning to main menu.")
         return
 
     # Update query for the chosen column
     query = f"UPDATE Recipes SET {column} = %s WHERE id = %s"
     cursor.execute(query, (new_value, recipe_id))
     conn.commit()
-    print(f"Recipe {column} updated!")
-    print("\n---------------------------\n")
 
     # Recalculate difficulty
     if column in ["cooking_time", "ingredients"]:
@@ -258,7 +255,7 @@ def update_recipe(conn, cursor):
         # Update the difficulty in the database
         cursor.execute("UPDATE Recipes SET difficulty = %s WHERE id = %s", (new_difficulty, recipe_id))
         conn.commit()
-        print("Recipe difficulty updated.")
+        print("Recipe updated!")
         print("\n---------------------------\n")
     return
 
