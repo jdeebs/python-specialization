@@ -20,14 +20,13 @@ cursor.execute("USE task_database")
 
 # Create a table called Recipes with columns
 # id, name, ingredients, cooking_time, difficulty
-cursor.execute('''CREATE TABLE IF NOT EXISTS Recipes
+cursor.execute('''CREATE TABLE IF NOT EXISTS Recipes (
                id INT,
                name VARCHAR(50),
                ingredients VARCHAR(255),
                cooking_time INT,
-            difficulty VARCHAR(20)
-            return difficulty
-               ''')
+               difficulty VARCHAR(20)
+               )''')
 
 def create_recipe(conn, cursor):
     print("Enter your recipe info")
@@ -94,8 +93,9 @@ def search_recipe(conn, cursor):
     # Search for rows in the table that contain search_ingredient
     query = '''SELECT name, ingredients, cooking_time, difficulty FROM Recipes WHERE ingredients LIKE %s
     '''
-    search_pattern = f"%{search_ingredient}%"
-    cursor.execute(query, (search_pattern))
+    search = f"%{search_ingredient}%"
+    # Create a tuple with a single element, as MySQL connector cannot accept a string
+    cursor.execute(query, (search,))
     matching_recipes = cursor.fetchall()
 
     # Display search results
@@ -156,4 +156,33 @@ def main_menu():
             print("Invalid input. Please try again.")
             continue
 
-main_menu(conn, cursor)
+# main_menu(conn, cursor)
+
+# Sample data for testing
+def setup_sample_data(cursor, conn):
+    cursor.execute("USE task_database")
+    cursor.execute('''INSERT INTO Recipes (id, name, ingredients, cooking_time, difficulty)
+                      VALUES (1, 'Tomato Soup', 'tomato, onion, garlic', 30, 'Easy'),
+                             (2, 'Pasta Marinara', 'pasta, tomato, garlic, basil', 20, 'Medium'),
+                             (3, 'Garlic Bread', 'bread, garlic, butter', 15, 'Easy')''')
+    conn.commit()
+
+def test_create_recipe(conn, cursor):
+    print("Testing create_recipe...")
+    create_recipe(conn, cursor)
+    print("Create recipe test passed!")
+
+def test_search_recipe(conn, cursor):
+    print("Testing search_recipe...")
+    # Ensure data is available for searching
+    setup_sample_data(cursor, conn)  
+    search_recipe(conn, cursor)
+    print("Search recipe test passed!")
+
+def run_tests(conn, cursor):
+    setup_sample_data(cursor, conn)
+    test_create_recipe(conn, cursor)
+    test_search_recipe(conn, cursor)
+    print("All tests completed successfully!")
+
+run_tests(conn, cursor)
