@@ -63,10 +63,11 @@ def create_recipe(conn, cursor):
 
 def search_recipe(conn, cursor):
     # Store entire ingredients column w/ tuples on each row containing specific recipe ingredients
-    results = cursor.execute("SELECT ingredients FROM Recipes")
+    cursor.execute("SELECT ingredients FROM Recipes")
+    results = cursor.fetchall()
+
     # Use a set to handle duplicates
     all_ingredients = set()
-
     # Iterate over each row in ingredients column
     for row in results:
         # Split the string by comma and space to get individual ingredients
@@ -76,10 +77,38 @@ def search_recipe(conn, cursor):
 
     all_ingredients = list(all_ingredients)
 
-    """
-Display all the ingredients that you've found so far to the user, and allow them to pick a number corresponding to the ingredient in order to begin a search. Store the ingredient to be searched for into a variable called search_ingredient.
-To search for rows in the table that contain search_ingredient within the ingredients column, use the WHERE statement with the LIKE operator: SELECT <columns to be displayed> FROM <table> WHERE <search column> LIKE <search pattern>.
-    """
+    print("\nAll ingredients:")
+    # Display all ingredients with indexes
+    for index, ingredient in enumerate(all_ingredients):
+        print(f"{index}: {ingredient}")
+    try:
+        # Get user input for index parsing
+        ingredient_index = int(input("\nPick a number to select ingredient: "))
+        # Get ingredient based on index
+        search_ingredient = all_ingredients[ingredient_index]
+    except:
+        # Handle input errors
+        print("Input is incorrect")
+        return
+    
+    # Search for rows in the table that contain search_ingredient
+    query = '''SELECT name, ingredients, cooking_time, difficulty FROM Recipes WHERE ingredients LIKE %s
+    '''
+    search_pattern = f"%{search_ingredient}%"
+    cursor.execute(query, (search_pattern))
+    matching_recipes = cursor.fetchall()
+
+    # Display search results
+    if matching_recipes:
+        print(f"\nRecipes containing '{search_ingredient}': ")
+        for recipe in matching_recipes:
+            name, ingredients, cooking_time, difficulty = recipe
+            print(f"Name: {name}")
+            print(f"Ingredients: {ingredients}")
+            print(f"Cooking Time: {cooking_time} minutes")
+            print(f"Difficulty: {difficulty}\n")
+    else:
+        print(f"No recipes found containing '{search_ingredient}'.")
 
 def update_recipe(conn, cursor):
     return
