@@ -35,7 +35,7 @@ def create_recipe(conn, cursor):
     # Get user input for name and cooking time
     # Capitalize name
     name = str(input("Recipe name: "))
-    name_capitalized = name.capitalize()
+    name = name.capitalize()
     cooking_time = int(input("Cooking time (in minutes): "))
 
     # Get ingredients as a list
@@ -45,10 +45,10 @@ def create_recipe(conn, cursor):
     # Capitalize each ingredient
     while True:
         ingredient = str(input("Ingredient: "))
-        ingredient_capitalized = ingredient.capitalize()
+        ingredient = ingredient.capitalize()
         if ingredient.lower() == 'done':
             break
-        ingredients.append(ingredient_capitalized)
+        ingredients.append(ingredient)
 
     # Convert ingredients list to a comma separated string
     ingredients_string = ", ".join(ingredients)
@@ -59,7 +59,7 @@ def create_recipe(conn, cursor):
     # Execute SQL query to insert the recipe
     query = '''INSERT INTO Recipes (name, ingredients, cooking_time, difficulty)
                VALUES (%s, %s, %s, %s)'''
-    cursor.execute(query, (name_capitalized, ingredients_string, cooking_time, difficulty))
+    cursor.execute(query, (name, ingredients_string, cooking_time, difficulty))
 
     # Commit to save changes
     conn.commit()
@@ -166,6 +166,7 @@ def update_recipe(conn, cursor):
     if column_to_update == "1":
         column = "name"
         new_value = input("Enter the new name for the recipe: ")
+        new_value = new_value.capitalize()
         try:
             new_value = str(new_value)
         except ValueError:
