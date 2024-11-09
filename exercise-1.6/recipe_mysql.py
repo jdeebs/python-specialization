@@ -171,12 +171,16 @@ def update_recipe(conn, cursor):
     for recipe in all_recipes:
         print(f"ID: {recipe[0]}, Name: {recipe[1]}")
 
-    # Get recipe ID to update from user
-    recipe_id = input("Enter the ID of the recipe to update: ")
-    # Check if the user input ID matches any of the recipe IDs
-    if not any(str(recipe[0]) == recipe_id for recipe in all_recipes):
-        print("Invalid Recipe ID.")
-        return
+    # Prompt for valid recipe ID
+    while True:
+        # Get recipe ID from user
+        recipe_id = input("Enter the ID of the recipe to update: ")
+
+        # Check if the user input ID matches any of the recipe IDs
+        if any(str(recipe[0]) == recipe_id for recipe in all_recipes):
+            break
+        else:
+            print("Invalid recipe ID. Please try again.")
     
     # Ask the user for which column to update
     print("Which column would you like to update?")
@@ -195,6 +199,8 @@ def update_recipe(conn, cursor):
         new_value = new_value.title()
         try:
             new_value = str(new_value)
+            print(f"Recipe name updated to {new_value}.")
+            print("\n---------------------------\n")
         except ValueError:
             print("Invalid name.")
             return
@@ -203,6 +209,8 @@ def update_recipe(conn, cursor):
         new_value = input("Enter the new cooking time (in minutes): ")
         try:
             new_value = int(new_value)
+            print(f"Recipe cooking time updated to {new_value} minutes.")
+            print("\n---------------------------\n")
         except ValueError:
             print("Invalid cooking time.")
             return
@@ -214,6 +222,11 @@ def update_recipe(conn, cursor):
             while True:
                 ingredient = input("Ingredient: ")
                 if ingredient.lower() == 'done':
+                    if ingredients:
+                        new_value = ", ".join(ingredients)
+                        print(f"Ingredients updated to: {new_value}")
+                    else:
+                        print("No ingredients entered. Returning to main menu.")
                     break
                 # Check if user entered nothing as ingredient
                 elif ingredient == '':
@@ -225,7 +238,6 @@ def update_recipe(conn, cursor):
             if not ingredients:
                 print("No ingredients entered. Returning to main menu.")
                 return
-            new_value = ", ".join(ingredients)
         except ValueError:
             print("Error adding ingredients.")
             print("\n---------------------------\n")
