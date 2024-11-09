@@ -33,9 +33,10 @@ def create_recipe(conn, cursor):
     print("Enter your recipe info")
 
     # Get user input for name and cooking time
-    # Capitalize name
+    # Capitalize name using title
+    # this is an example -> This Is An Example
     name = str(input("Recipe name: "))
-    name = name.capitalize()
+    name = name.title()
     cooking_time = int(input("Cooking time (in minutes): "))
 
     # Get ingredients as a list
@@ -166,7 +167,7 @@ def update_recipe(conn, cursor):
     if column_to_update == "1":
         column = "name"
         new_value = input("Enter the new name for the recipe: ")
-        new_value = new_value.capitalize()
+        new_value = new_value.title()
         try:
             new_value = str(new_value)
         except ValueError:
