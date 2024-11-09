@@ -21,11 +21,12 @@ cursor.execute("USE task_database")
 # Create a table called Recipes with columns
 # id, name, ingredients, cooking_time, difficulty
 cursor.execute('''CREATE TABLE IF NOT EXISTS Recipes (
-               id INT,
+               id INT NOT NULL AUTO_INCREMENT,
                name VARCHAR(50),
                ingredients VARCHAR(255),
                cooking_time INT,
-               difficulty VARCHAR(20)
+               difficulty VARCHAR(20),
+               PRIMARY KEY (id)
                )''')
 
 def create_recipe(conn, cursor):
@@ -111,7 +112,78 @@ def search_recipe(conn, cursor):
         print(f"No recipes found containing '{search_ingredient}'.")
 
 def update_recipe(conn, cursor):
-    return
+    # Store all recipes
+    cursor.execute("SELECT id, name FROM Recipes")
+    all_recipes = cursor.fetchall()
+
+    print("\nAll recipes:")
+    # Display all recipes with their IDs and name
+    for recipe in all_recipes:
+        print(f"ID: {recipe[0]}, Name: {recipe[1]}")
+
+    # Get recipe ID to update from user
+    recipe_id = input("Enter the ID of the recipe to update: ")
+    # Check if the user input ID matches any of the recipe IDs
+    if not any(str(recipe[0]) == recipe_id for recipe in all_recipes):
+        print("Invalid Recipe ID.")
+        return
+    
+    # Ask the user for which column to update
+    print("Which column would you like to update?")
+    print("1. Name")
+    print("2. Cooking Time")
+    print("3. Ingredients")
+    column_to_update = input("Enter the number for the column to update: ")
+    
+    # Map choice to column name and prompt for the new value
+    column = None
+    new_value = None
+
+    if column_to_update == "1":
+        column = "name"
+        new_value = input("Enter the new name for the recipe: ")
+    elif column_to_update == "2":
+        column = "cooking_time"
+        new_value = input("Enter the new cooking time (in minutes): ")
+        try:
+            new_value = int(new_value)
+        except ValueError:
+            print("Invalid cooking time.")
+            return
+    elif column_to_update == "3":
+        column = "ingredients"
+        ingredients = []
+        print("Enter ingredients one by one (type 'done' to finish):")
+        while True:
+            ingredient = input("Ingredient: ")
+            if ingredient.lower() == 'done':
+                break
+            ingredients.append(ingredient)
+        new_value = ", ".join(ingredients)
+    else:
+        print("Invalid choice.")
+        return
+    
+    # Update query for the chosen column
+    query = f"UPDATE Recipes SET {column} = %s WHERE id = %s"
+    cursor.execute(query, (new_value, recipe_id))
+    conn.commit()
+    print(f"Recipe {column} updated!")
+
+    # Recalculate difficulty
+    if column in ["cooking_time", "ingredients"]:
+        # Store cooking_time and ingredients
+        cursor.execute("SELECT cooking_time, ingredients FROM Recipes WHERE id = %s", (recipe_id,))
+        recipe_data = cursor.fetchone()
+
+        # Call function with cooking_time and ingredients properties
+        # Store result in new_difficulty
+        new_difficulty = calculate_difficulty(recipe_data[0], recipe_data[1].split(", "))
+
+        # Update the difficulty in the database
+        cursor.execute("UPDATE Recipes SET difficulty = %s WHERE id = %s", (new_difficulty, recipe_id))
+        conn.commit()
+        print("Recipe difficulty updated.")
 
 def delete_recipe(conn, cursor):
     return
@@ -161,10 +233,10 @@ def main_menu():
 # Sample data for testing
 def setup_sample_data(cursor, conn):
     cursor.execute("USE task_database")
-    cursor.execute('''INSERT INTO Recipes (id, name, ingredients, cooking_time, difficulty)
-                      VALUES (1, 'Tomato Soup', 'tomato, onion, garlic', 30, 'Easy'),
-                             (2, 'Pasta Marinara', 'pasta, tomato, garlic, basil', 20, 'Medium'),
-                             (3, 'Garlic Bread', 'bread, garlic, butter', 15, 'Easy')''')
+    cursor.execute('''INSERT INTO Recipes (name, ingredients, cooking_time, difficulty)
+                      VALUES ('Tomato Soup', 'tomato, onion, garlic', 30, 'Easy'),
+                             ('Pasta Marinara', 'pasta, tomato, garlic, basil', 20, 'Medium'),
+                             ('Garlic Bread', 'bread, garlic, butter', 15, 'Easy')''')
     conn.commit()
 
 def test_create_recipe(conn, cursor):
@@ -179,10 +251,16 @@ def test_search_recipe(conn, cursor):
     search_recipe(conn, cursor)
     print("Search recipe test passed!")
 
+def test_update_recipe(conn, cursor):
+    print("Testing update_recipe...")
+    update_recipe(conn, cursor)
+    print("Update recipe test passed!")
+
 def run_tests(conn, cursor):
     setup_sample_data(cursor, conn)
     test_create_recipe(conn, cursor)
     test_search_recipe(conn, cursor)
+    test_update_recipe(conn, cursor)
     print("All tests completed successfully!")
 
 run_tests(conn, cursor)
