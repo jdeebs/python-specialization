@@ -142,6 +142,11 @@ def update_recipe(conn, cursor):
     if column_to_update == "1":
         column = "name"
         new_value = input("Enter the new name for the recipe: ")
+        try:
+            new_value = str(new_value)
+        except ValueError:
+            print("Invalid name.")
+            return
     elif column_to_update == "2":
         column = "cooking_time"
         new_value = input("Enter the new cooking time (in minutes): ")
@@ -154,12 +159,16 @@ def update_recipe(conn, cursor):
         column = "ingredients"
         ingredients = []
         print("Enter ingredients one by one (type 'done' to finish):")
-        while True:
-            ingredient = input("Ingredient: ")
-            if ingredient.lower() == 'done':
-                break
-            ingredients.append(ingredient)
-        new_value = ", ".join(ingredients)
+        try:
+            while True:
+                ingredient = input("Ingredient: ")
+                if ingredient.lower() == 'done':
+                    break
+                ingredients.append(ingredient.capitalize())
+                new_value = ", ".join(ingredients)
+        except ValueError:
+            print("Error adding ingredients.")
+            return
     else:
         print("Invalid choice.")
         return
