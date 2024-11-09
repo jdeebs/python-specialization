@@ -33,7 +33,9 @@ def create_recipe(conn, cursor):
     print("Enter your recipe info")
 
     # Get user input for name and cooking time
+    # Capitalize name
     name = str(input("Recipe name: "))
+    name_capitalized = name.capitalize()
     cooking_time = int(input("Cooking time (in minutes): "))
 
     # Get ingredients as a list
@@ -57,7 +59,7 @@ def create_recipe(conn, cursor):
     # Execute SQL query to insert the recipe
     query = '''INSERT INTO Recipes (name, ingredients, cooking_time, difficulty)
                VALUES (%s, %s, %s, %s)'''
-    cursor.execute(query, (name, ingredients_string, cooking_time, difficulty))
+    cursor.execute(query, (name_capitalized, ingredients_string, cooking_time, difficulty))
 
     # Commit to save changes
     conn.commit()
