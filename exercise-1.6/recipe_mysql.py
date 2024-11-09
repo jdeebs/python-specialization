@@ -35,9 +35,26 @@ def create_recipe(conn, cursor):
     # Get user input for name and cooking time
     # Capitalize name using title
     # this is an example -> This Is An Example
-    name = str(input("Recipe name: "))
-    name = name.title()
-    cooking_time = int(input("Cooking time (in minutes): "))
+    try:
+        while True:
+            name = input("Recipe name: ").strip().title()
+            if not name:
+                print("Recipe name cannot be empty. Please enter a valid name.")
+                continue
+            try:
+                cooking_time = int(input("Cooking time (in minutes): "))
+                if cooking_time <= 0:
+                    print("Cooking time must be a positive integer.")
+                    continue
+            except ValueError:
+                print("Invalid input. Please enter a number for cooking time.")
+                continue
+
+            # Break if name and cooking time are valid
+            break
+    except:
+        print("Something went wrong. Returning to main menu.")
+        return
 
     # Get ingredients as a list
     ingredients = []
@@ -49,8 +66,16 @@ def create_recipe(conn, cursor):
         ingredient = ingredient.capitalize()
         if ingredient.lower() == 'done':
             break
-        ingredients.append(ingredient)
+        # Check if user entered nothing as ingredient
+        elif ingredient == '':
+            print("Enter a valid ingredient.")
+            continue
+        ingredients.append(ingredient.capitalize())
 
+    # Check if no ingredients were entered
+    if not ingredients:
+        print("No ingredients entered. Returning to main menu.")
+        return
     # Convert ingredients list to a comma separated string
     ingredients_string = ", ".join(ingredients)
 
@@ -65,6 +90,7 @@ def create_recipe(conn, cursor):
     # Commit to save changes
     conn.commit()
     print("Recipe added!")
+    print("\n---------------------------\n")
     return
 
 def search_recipe(conn, cursor):
@@ -125,10 +151,11 @@ def search_recipe(conn, cursor):
             print(f"Name: {name}")
             print(f"Ingredients: {ingredients}")
             print(f"Cooking Time: {cooking_time} minutes")
-            print(f"Difficulty: {difficulty}\n")
-            print("---------------------------")
+            print(f"Difficulty: {difficulty}")
+            print("\n---------------------------\n")
     else:
         print(f"No recipes found containing '{search_ingredient}'.")
+        print("\n---------------------------\n")
         return
 
 def update_recipe(conn, cursor):
@@ -213,6 +240,7 @@ def update_recipe(conn, cursor):
     cursor.execute(query, (new_value, recipe_id))
     conn.commit()
     print(f"Recipe {column} updated!")
+    print("\n---------------------------\n")
 
     # Recalculate difficulty
     if column in ["cooking_time", "ingredients"]:
@@ -231,6 +259,7 @@ def update_recipe(conn, cursor):
         cursor.execute("UPDATE Recipes SET difficulty = %s WHERE id = %s", (new_difficulty, recipe_id))
         conn.commit()
         print("Recipe difficulty updated.")
+        print("\n---------------------------\n")
     return
 
 def delete_recipe(conn, cursor):
@@ -272,6 +301,7 @@ def delete_recipe(conn, cursor):
     cursor.execute(query, (recipe_id,))
     conn.commit()
     print("Recipe deleted!")
+    print("\n---------------------------\n")
 
 def calculate_difficulty(cooking_time, ingredients):
     if cooking_time < 10 and len(ingredients) < 4:
