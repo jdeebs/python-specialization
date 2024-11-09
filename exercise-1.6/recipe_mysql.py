@@ -78,7 +78,12 @@ def search_recipe(conn, cursor):
 
     all_ingredients = list(all_ingredients)
 
-    print("\nAll ingredients:")
+    # Check if list of ingredients is empty and exit if true
+    if len(all_ingredients) == 0:
+        print("No ingredients found.")
+        return
+    
+    print("\nAll recipe ingredients:")
     # Display all ingredients with indexes
     for index, ingredient in enumerate(all_ingredients):
         print(f"{index}: {ingredient}")
@@ -88,9 +93,9 @@ def search_recipe(conn, cursor):
     if user_input == 'quit':
         return
     
+    # Get ingredient based on index
     try:
         ingredient_index = int(user_input)
-        # Get ingredient based on index
         search_ingredient = all_ingredients[ingredient_index]
     except:
         # Handle input errors
@@ -107,13 +112,14 @@ def search_recipe(conn, cursor):
 
     # Display search results
     if matching_recipes:
-        print(f"\nRecipes containing '{search_ingredient}': ")
+        print(f"\nRecipes containing '{search_ingredient}':\n")
         for recipe in matching_recipes:
             name, ingredients, cooking_time, difficulty = recipe
             print(f"Name: {name}")
             print(f"Ingredients: {ingredients}")
             print(f"Cooking Time: {cooking_time} minutes")
             print(f"Difficulty: {difficulty}\n")
+            print("---------------------------")
     else:
         print(f"No recipes found containing '{search_ingredient}'.")
         return
