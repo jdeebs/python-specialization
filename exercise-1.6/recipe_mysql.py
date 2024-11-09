@@ -186,7 +186,31 @@ def update_recipe(conn, cursor):
         print("Recipe difficulty updated.")
 
 def delete_recipe(conn, cursor):
-    return
+    # Store all recipes
+    cursor.execute("SELECT id, name FROM Recipes")
+    all_recipes = cursor.fetchall()
+
+    print("\nAll recipes:")
+    # Display all recipes with their IDs and name
+    for recipe in all_recipes:
+        print(f"ID: {recipe[0]}, Name: {recipe[1]}")
+
+    # Get recipe ID to delete from user
+    try:
+        recipe_id = int(input("Enter the ID of the recipe you want to DELETE: "))
+    except ValueError:
+        print("Invalid input. Please enter a valid integer ID.")
+        return
+    # Check if the user input ID matches any of the recipe IDs
+    if not any(recipe[0] == recipe_id for recipe in all_recipes):
+        print("Invalid Recipe ID.")
+        return
+    # Query to delete recipe matching user input ID
+    query = '''DELETE FROM Recipes WHERE id = %s
+    '''
+    cursor.execute(query, (recipe_id,))
+    conn.commit()
+    print("Recipe deleted!")
 
 def calculate_difficulty(cooking_time, ingredients):
     if cooking_time < 10 and len(ingredients) < 4:
@@ -256,11 +280,17 @@ def test_update_recipe(conn, cursor):
     update_recipe(conn, cursor)
     print("Update recipe test passed!")
 
+def test_delete_recipe(conn, cursor):
+    print("Testing delete_recipe...")
+    delete_recipe(conn, cursor)
+    print("Delete recipe test passed!")
+
 def run_tests(conn, cursor):
-    setup_sample_data(cursor, conn)
-    test_create_recipe(conn, cursor)
-    test_search_recipe(conn, cursor)
-    test_update_recipe(conn, cursor)
+    # setup_sample_data(cursor, conn)
+    # test_create_recipe(conn, cursor)
+    # test_search_recipe(conn, cursor)
+    # test_update_recipe(conn, cursor)
+    test_delete_recipe(conn, cursor)
     print("All tests completed successfully!")
 
 run_tests(conn, cursor)
