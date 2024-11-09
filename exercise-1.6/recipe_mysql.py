@@ -285,44 +285,4 @@ def main_menu():
         else:
             print("Invalid input. Please try again.")
 
-# Sample data for testing
-def setup_sample_data(cursor, conn):
-    cursor.execute("USE task_database")
-    cursor.execute('''INSERT INTO Recipes (name, ingredients, cooking_time, difficulty)
-                      VALUES ('Tomato Soup', 'tomato, onion, garlic', 30, 'Easy'),
-                             ('Pasta Marinara', 'pasta, tomato, garlic, basil', 20, 'Medium'),
-                             ('Garlic Bread', 'bread, garlic, butter', 15, 'Easy')''')
-    conn.commit()
-
-def test_create_recipe(conn, cursor):
-    print("Testing create_recipe...")
-    create_recipe(conn, cursor)
-    print("Create recipe test passed!")
-
-def test_search_recipe(conn, cursor):
-    print("Testing search_recipe...")
-    # Ensure data is available for searching
-    setup_sample_data(cursor, conn)  
-    search_recipe(conn, cursor)
-    print("Search recipe test passed!")
-
-def test_update_recipe(conn, cursor):
-    print("Testing update_recipe...")
-    update_recipe(conn, cursor)
-    print("Update recipe test passed!")
-
-def test_delete_recipe(conn, cursor):
-    print("Testing delete_recipe...")
-    delete_recipe(conn, cursor)
-    print("Delete recipe test passed!")
-
-def run_tests(conn, cursor):
-    # setup_sample_data(cursor, conn)
-    # test_create_recipe(conn, cursor)
-    # test_search_recipe(conn, cursor)
-    # test_update_recipe(conn, cursor)
-    test_delete_recipe(conn, cursor)
-    print("All tests completed successfully!")
-
-# run_tests(conn, cursor)
 main_menu()
