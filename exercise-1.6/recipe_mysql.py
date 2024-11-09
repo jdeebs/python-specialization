@@ -189,8 +189,17 @@ def update_recipe(conn, cursor):
                 ingredient = input("Ingredient: ")
                 if ingredient.lower() == 'done':
                     break
+                # Check if user entered nothing as ingredient
+                elif ingredient == '':
+                    print("Enter a valid ingredient.")
+                    continue
                 ingredients.append(ingredient.capitalize())
-                new_value = ", ".join(ingredients)
+
+            # Check if no ingredients were entered
+            if not ingredients:
+                print("No ingredients entered. Returning to main menu.")
+                return
+            new_value = ", ".join(ingredients)
         except ValueError:
             print("Error adding ingredients.")
             return
@@ -210,9 +219,12 @@ def update_recipe(conn, cursor):
         cursor.execute("SELECT cooking_time, ingredients FROM Recipes WHERE id = %s", (recipe_id,))
         recipe_data = cursor.fetchone()
 
+        # Handle if ingredients are None (no ingredients entered)
+        ingredients_list = recipe_data[1].split(", ") if recipe_data[1] else []
+
         # Call function with cooking_time and ingredients properties
         # Store result in new_difficulty
-        new_difficulty = calculate_difficulty(recipe_data[0], recipe_data[1].split(", "))
+        new_difficulty = calculate_difficulty(recipe_data[0], ingredients_list)
 
         # Update the difficulty in the database
         cursor.execute("UPDATE Recipes SET difficulty = %s WHERE id = %s", (new_difficulty, recipe_id))
