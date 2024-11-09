@@ -246,32 +246,28 @@ def calculate_difficulty(cooking_time, ingredients):
         print("Something went wrong calculating recipe difficulty!")
 
 def main_menu():
-    print("What would you like to do?\nEnter the number 1-4 or type 'quit' to exit the program.")
-    print("1. Add recipe")
-    print("2. Search for a recipe")
-    print("3. Edit recipe")
-    print("4. Delete recipe")
-    choice = input("Your choice: ")
+    while True:
+        print("What would you like to do?\nEnter the number 1-4 or type 'quit' to exit the program.")
+        print("1. Add recipe")
+        print("2. Search for a recipe")
+        print("3. Edit recipe")
+        print("4. Delete recipe")
+        choice = input("Your choice: ")
 
-    while(choice != "quit"):
         if choice == "1":
             create_recipe(conn, cursor)
-            return
         elif choice == "2":
             search_recipe(conn, cursor)
-            return
         elif choice == "3":
             update_recipe(conn, cursor)
-            return
         elif choice == "4":
             delete_recipe(conn, cursor)
-            return
-        elif choice == "quit":
+        elif choice.lower() == "quit":
+            print("Exiting the program.")
             conn.close()
             break
         else:
             print("Invalid input. Please try again.")
-            continue
 
 # Sample data for testing
 def setup_sample_data(cursor, conn):
