@@ -108,3 +108,12 @@ session.query(Recipe).filter(*condition_list).all()
 # dictionary syntax -> { }
 # Rename Cake recipe to Birthday Cake
 session.query(Recipe).filter(Recipe.name == 'Cake').update({Recipe.name: 'Birthday Cake'})
+
+# Can delete rows from tables using SQLAlchemy's ORM
+# the session object has a delete() method
+# Retrieve recipe to delete as an object from the
+# database and pass that object to delete() method
+recipe_to_delete = session.query(Recipe).filter(Recipe.name == 'Buttered Toast').one()
+
+# Delete recipe
+session.delete(recipe_to_delete)
