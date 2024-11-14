@@ -46,3 +46,13 @@ recipes = [
 session.add_all(recipes)
 # Commit the session to save the new recipes to the database
 session.commit()
+
+# Assign recipes from database to a variable to be accessible using dot notation
+recipes_list = session.query(Recipe).all()
+
+# Examples
+recipes_list[0].id
+recipes_list[0].name
+recipes_list[3].name
+recipes_list[0].ingredients
+recipes_list[0].cooking_time
