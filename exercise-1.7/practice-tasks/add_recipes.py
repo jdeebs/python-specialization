@@ -102,3 +102,9 @@ condition_list = [
     Recipe.ingredients.like("%Baking Powder%")
 ]
 session.query(Recipe).filter(*condition_list).all()
+
+# Make direct changes using the update() method
+# expects a dictionary as its argument, must have
+# dictionary syntax -> { }
+# Rename Cake recipe to Birthday Cake
+session.query(Recipe).filter(Recipe.name == 'Cake').update({Recipe.name: 'Birthday Cake'})
