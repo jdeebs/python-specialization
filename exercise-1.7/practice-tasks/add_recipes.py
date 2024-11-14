@@ -50,9 +50,35 @@ session.commit()
 # Assign recipes from database to a variable to be accessible using dot notation
 recipes_list = session.query(Recipe).all()
 
-# Examples
+# Examples to query individually
 recipes_list[0].id
 recipes_list[0].name
 recipes_list[3].name
 recipes_list[0].ingredients
 recipes_list[0].cooking_time
+
+# Example to query all recipe details formatted, using a for loop
+for recipe in recipes_list:
+    print("Recipe ID: ", recipe.id)
+    print("Recipe Name: ", recipe.name)
+    print("Ingredients: ", recipe.ingredients)
+    print("Cooking Time: ", recipe.cooking_time)
+
+######################################################
+######## QUERY METHODS ###############################
+
+# Retrieve a single object using get() method
+# get() uses primary key to specify which row
+session.query(Recipe).get(1)
+
+# Retrieve one or more objects using filter() method
+# requires a "final method" to get the resultant object
+# otherwise returns a query object
+# final method in this case is .one()
+'''
+all() - returns a list of all objects from the query (output type: list)
+one() - returns only one object, if only one object is resultant from your query (output type: object from your table)
+first() - returns the first object from a list of results (output type: object from your table)
+get(id) - returns an object with an id that matches with the primary key (output type: object from your table)
+'''
+session.query(Recipe).filter(Recipe.name == 'Coffee').one()
