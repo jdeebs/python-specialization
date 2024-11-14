@@ -82,3 +82,23 @@ first() - returns the first object from a list of results (output type: object f
 get(id) - returns an object with an id that matches with the primary key (output type: object from your table)
 '''
 session.query(Recipe).filter(Recipe.name == 'Coffee').one()
+
+# Retrieve objects using bits of strings or patterns in row values with like() method
+# uses the % wildcard on either side to check if
+# entries contain "Water" rather than exactly matches
+# 'Water'
+session.query(Recipe).filter(Recipe.ingredients.like("%Water%")).all()
+
+# Can also search for multiple conditions separating
+# them with commas in the argument
+# Searches for both 'Milk' and 'Baking Powder'
+session.query(Recipe).filter(Recipe.ingredients.like("%Milk%"), Recipe.ingredients.like("%Baking Powder%")).all()
+
+# For any arbitrary number of conditions
+# append each condition to a list and use a preceding
+# asterisk '*' within the filter method
+condition_list = [
+    Recipe.ingredients.like("%Milk%"),
+    Recipe.ingredients.like("%Baking Powder%")
+]
+session.query(Recipe).filter(*condition_list).all()
