@@ -85,3 +85,68 @@ class Recipe(Base):
 # tables/columns in the database, requires 'engine' argument
 # to connect to the database
 Base.metadata.create_all(engine)
+
+################ FUNCTIONS ################
+
+def create_recipe():
+    print("Enter your recipe info!\n")
+    
+    # Get user input for name and cooking time
+    while True:
+        try:
+            name = input("Recipe name: ").strip().title()
+            if len(name) <= 50:
+                break
+            elif len(name) > 50:
+                print("Recipe name must be less than 50 characters.")
+                continue
+            else:
+                print("Recipe name cannot be empty. Please enter a valid name.")
+        except ValueError:
+            print("Invalid name. Please enter a valid name for your recipe.")
+    while True:
+        try:
+            cooking_time = int(input("Cooking time (in minutes): "))
+            if cooking_time > 0:
+                break
+            # Handle empty input
+            elif not cooking_time:
+                print("Cooking time cannot be empty. Please enter a valid cooking time.")
+            else:
+                print("Cooking time must be a positive number.")
+        except ValueError:
+            print("Invalid cooking time. Please enter a number for cooking time.")
+
+    # Get ingredients as a list
+    ingredients = []
+    print("Enter ingredients one by one (type 'done' to finish):")
+    # Append each ingredient until user types done
+    while True:
+        try:
+            ingredient = str(input("Ingredient: ")).strip()
+            if ingredient.lower() == 'done':
+                break
+            # Handle empty input
+            elif not ingredient:
+                print("Ingredient cannot be empty. Please enter a valid ingredient.")
+                continue
+            ingredients.append(ingredient.capitalize())
+        except ValueError:
+            print("Invalid ingredient. Please enter a valid ingredient for your recipe.")
+
+    # Convert ingredients list to comma separated string
+    ingredients_str = ", ".join(ingredients)
+
+    # Create recipe instance and calculate difficulty
+    recipe_entry = Recipe(
+    name=name, 
+    cooking_time=cooking_time, ingredients=ingredients_str, 
+    difficulty=None)
+
+    recipe_entry.calculate_difficulty(cooking_time, ingredients)
+
+    # Add recipe to database
+    session.add(recipe_entry)
+    session.commit()
+    print("Recipe created successfully!")
+    return recipe_entry
