@@ -162,5 +162,88 @@ def view_all_recipes():
     
     # Loop through recipes and call their respective __str__ methods to display each recipe
     for recipe in recipes_list:
-        recipe.__str__()
+        print(recipe)
 
+def search_by_ingredients():
+    # Use count() to check number of entries (rows) in the table and handle if the there are no entries
+    if not session.query(Recipe).count():
+        print("There aren't any existing recipes to pull ingredients from.")
+        return None
+    
+    # Store ingredients in results variable
+    results = session.query(Recipe.ingredients).all()
+    
+    # Use a set to handle duplicates
+    all_ingredients = set()
+    # Iterate through each row entry and split ingredients to append them to the all_ingredients list
+    for row in results:
+        # Need index number to loop through tuples
+        if row[0]:
+            # Split the string by space to get individual ingredients
+            ingredient = row[0].split(", ")
+            # Add each ingredient to the set, ignoring duplicates
+            all_ingredients.update(ingredient)
+        
+    # Convert all_ingredients from set to list so it can be indexed
+    all_ingredients = list(all_ingredients)
+
+    # Display ingredients
+    print("\nAll recipe ingredients:\n")
+
+    # Display all ingredients with indexes
+    # Parse through ingredients list and enumerate each ingredient, printing the index associated
+    for index, ingredient in enumerate(all_ingredients):
+        print(f"{index}: {ingredient}")
+    
+    while True:
+        # Ask user for which ingredients to search and find matching recipes
+        user_input = input("\nEnter the indexes of ingredients you wish to see recipes for, separated by spaces. Type 'quit' to exit.\n(Example: 1 5 13): ")
+        # Handle quit
+        if user_input == 'quit':
+            break
+        # Handle non-numeric input
+        elif not all(part.isnumeric() for part in user_input.split()):
+            print("Indexes must be numeric. Please try again.")
+            continue
+
+        # Create a list of user input indexes
+        ingredient_indexes = user_input.split(" ")
+        # Convert each substring to integer type
+        ingredient_indexes = [int(i) for i in ingredient_indexes]
+
+        # Create an available ingredients index
+        available_ingredients = []
+        invalid_indexes = []
+
+        for i in ingredient_indexes:
+            # Check that index is within valid range
+            if 0 <= i < len(all_ingredients):
+                available_ingredients.append(all_ingredients[i])
+            else:
+                invalid_indexes.append(i)
+            
+        # Check if there were any invalid indexes
+        if invalid_indexes:
+            print("Selected ingredients are not available. Please select from available ingredients.")
+            continue
+    
+        # Check that user input matches available options
+        print("You have selected the ingredients:")
+        # Loop through selected indexes
+        for ingredient in available_ingredients:
+            print(ingredient)
+
+    # List containing conditions for every ingredient searched for
+    conditions = []
+
+    # Iterate through each searched ingredient and append the search condition to the conditions list
+    for ingredient in available_ingredients:
+        like_term = f"%{ingredient}%"
+        conditions.append(Recipe.ingredients.like(like_term))
+
+    # Retrieve all recipes containing the searched ingredients based on the conditions
+    searched_recipes = session.query(Recipe).filter(*conditions).all()
+
+    # Display searched recipes using __str__ method
+    for recipe in searched_recipes:
+        print(recipe)
