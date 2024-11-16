@@ -150,3 +150,17 @@ def create_recipe():
     session.commit()
     print("Recipe created successfully!")
     return recipe_entry
+
+def view_all_recipes():
+    # Retrieve all recipes from the database as a list
+    recipes_list = session.query(Recipe).all()
+
+    # Handle if list is empty
+    if not recipes_list:
+        print("There aren't any existing recipes.")
+        return None
+    
+    # Loop through recipes and call their respective __str__ methods to display each recipe
+    for recipe in recipes_list:
+        recipe.__str__()
+
