@@ -270,7 +270,7 @@ def edit_recipe():
         if user_input == 'quit':
             break
 
-        # Convert user input to integer
+        # Convert user input to integer to check ID with correct data type
         try:
             user_input = int(user_input)
             # Handle if ID doesn't exist in recipe_ids
@@ -365,10 +365,93 @@ def edit_recipe():
         return
 
     # Update the selected recipe column
-    session.query(Recipe).filter(column).update({new_value})
+    session.query(Recipe).filter(Recipe.id == user_input).update({column: new_value})
     session.commit()
 
     # Query the updated recipe
     recipe_to_edit = session.query(Recipe).get(user_input)
     # Recalculate difficulty using Recipe's class method
     recipe_to_edit.calculate_difficulty()
+
+def delete_recipe():
+    # Check if any recipes exist in the database
+    if not session.query(Recipe).count():
+        print("There aren't any existing recipes.")
+        return None
+    
+    # Retrieve ID and name of every recipe and display to user
+    results = session.query(Recipe.id, Recipe.name).all()
+
+    recipe_ids = []
+    for recipe in results:
+        recipe_ids.append(recipe[0])
+        print(recipe)
+
+    # Prompt user which recipe to delete by entering corresponding ID
+    while True:
+        user_input = input("\nEnter the ID of the recipe you want to delete. Type 'quit' to exit: ")
+        # Handle quit
+        if user_input == 'quit':
+            break
+
+        # Convert user input to integer to check ID with correct data type
+        try:
+            user_input = int(user_input)
+            # Handle if ID doesn't exist in recipe_ids
+            if user_input not in recipe_ids:
+                print("The entered ID does not exist. Please try again.")
+                continue
+        except:
+            print("Invalid input. Please enter a valid integer or 'quit'.")
+    
+    # Retrieve recipe by ID
+    recipe_to_delete = session.query(Recipe).get(user_input)
+
+    # Ask user to confirm choice
+    # If user confirms, delete entry from database
+    while True:
+        confirm_delete = input(f"\nAre you sure you want to DELETE the {recipe_to_delete.name} recipe? Type 'y' to DELETE or 'n' to cancel: ")
+
+        if confirm_delete.lower() == 'n':
+            print("Deletion canceled.")
+            break
+        
+        elif confirm_delete.lower() == 'y':
+            try:
+                session.delete(recipe_to_delete)
+                session.commit()
+                print("Recipe deleted.")
+                return
+            except ValueError:
+                print("Invalid input. Please enter 'y' or 'n' only.")
+
+def main_menu():
+    while True:
+        print("What would you like to do?\nEnter the number 1-4 or type 'quit' to exit the program.")
+        print("1. Create a new recipe")
+        print("2. View all recipes")
+        print("3. Search for recipes by ingredients")
+        print("4. Edit a recipe")
+        print("5. Delete a recipe")
+        choice = input("Your choice: ")
+
+        if choice == "1":
+            create_recipe()
+        elif choice == "2":
+            view_all_recipes()
+        elif choice == "3":
+            search_by_ingredients()
+        elif choice == "4":
+            edit_recipe()
+        elif choice == "5":
+            delete_recipe()
+        elif choice.lower() == "quit":
+            print("Exiting the program.")
+            # Close session and engine to end program
+            session.close()
+            engine.dispose()
+            break
+        else:
+            print("Invalid input. Please try again.")
+
+main_menu()
