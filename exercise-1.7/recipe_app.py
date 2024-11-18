@@ -247,3 +247,128 @@ def search_by_ingredients():
     # Display searched recipes using __str__ method
     for recipe in searched_recipes:
         print(recipe)
+
+def edit_recipe():
+    # Check if any recipes exist in the database
+    if not session.query(Recipe).count():
+        print("There aren't any existing recipes to edit.")
+        return None
+
+    # Retrieve ID and name for each recipe from the database and store in 'results' variable
+    results = session.query(Recipe.id, Recipe.name).all()
+
+    # Iterate over each item in results and display recipes available to user. Filter ids into list to check later
+    recipe_ids = []
+    for recipe in results:
+        recipe_ids.append(recipe[0])
+        print(recipe)
+
+    # User picks recipe by ID, if ID doesn't exist exit function
+    while True:
+        user_input = input("\nEnter the ID of the recipe you want to edit. Type 'quit' to exit: ")
+        # Handle quit
+        if user_input == 'quit':
+            break
+
+        # Convert user input to integer
+        try:
+            user_input = int(user_input)
+            # Handle if ID doesn't exist in recipe_ids
+            if user_input not in recipe_ids:
+                print("The entered ID does not exist. Please try again.")
+                continue
+        except:
+            print("Invalid input. Please enter a valid integer or 'quit'.")
+        
+    # Retrieve recipe corresponding to ID and store in 'recipe_to_edit' variable
+    recipe_to_edit = session.query(Recipe).get(user_input)
+
+    # Display the recipe details
+    print(recipe_to_edit)
+    # Prompt user for which to edit
+    print("Which column would you like to update?")
+    print("1. Name")
+    print("2. Cooking Time")
+    print("3. Ingredients")
+    column_to_update = input("Enter the number for the column to update: ")
+
+    # Edit the selected attribute inside 'recipe_to_edit' object
+    column = None
+    new_value = None
+
+    # Name attribute
+    if column_to_update == "1":
+        column = recipe_to_edit.name
+        new_value = input("Enter the new name for the recipe: ")
+        new_value = new_value.title()
+        try:
+            if new_value == '':
+                print("Name cannot be empty. Returning to main menu.")
+                return
+            new_value = str(new_value)
+            print(f"Recipe name updated to {new_value}.")
+            print("\n---------------------------\n")
+        except ValueError:
+            print("Invalid name. Returning to main menu.")
+            return
+    # Cooking time attribute
+    elif column_to_update == "2":
+        column = recipe_to_edit.cooking_time
+        new_value = input("Enter the new cooking time (in minutes): ")
+
+        try:
+            # Convert input to an integer first
+            new_value = int(new_value)
+
+            # Check if the cooking time is greater than 0
+            if new_value <= 0:
+                print("Cooking time must be greater than 0 minutes. Returning to main menu.")
+                return
+            # If valid
+            print(f"Recipe cooking time updated to {new_value} minutes.")
+            print("\n---------------------------\n")
+        except ValueError:
+            print("Invalid cooking time. Please enter a valid integer value for cooking time. Returning to main menu.")
+            return
+    # Ingredients attribute
+    elif column_to_update == "3":
+        column = recipe_to_edit.ingredients
+        ingredients = []
+        print("Enter ingredients one by one (type 'done' to finish):")
+        try:
+            while True:
+                ingredient = input("Ingredient: ")
+                if ingredient.lower() == 'done':
+                    if ingredients:
+                        new_value = ", ".join(ingredients)
+                        print(f"Ingredients updated to: {new_value}")
+                    else:
+                        print("No ingredients entered. Returning to main menu.")
+                    break
+                # Check if user entered nothing as ingredient
+                elif ingredient == '':
+                    print("Enter a valid ingredient.")
+                    continue
+                # Update ingredients list
+                ingredients.append(ingredient.capitalize())
+
+            # Check if no ingredients were entered
+            if not ingredients:
+                print("No ingredients entered. Returning to main menu.")
+                return
+        except ValueError:
+            print("Error adding ingredients.")
+            print("\n---------------------------\n")
+            return
+    else:
+        print("Invalid choice. Returning to main menu.")
+        return
+
+    # Update the selected recipe column
+    session.query(Recipe).filter(column).update({new_value})
+    session.commit()
+
+    # Query the updated recipe
+    recipe_to_edit = session.query(Recipe).get(user_input)
+    # Recalculate difficulty using Recipe's class method
+    recipe_to_edit.calculate_difficulty()
