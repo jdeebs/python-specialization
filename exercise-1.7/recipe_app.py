@@ -95,7 +95,7 @@ def create_recipe():
     while True:
         try:
             name = input("Recipe name: ").strip().title()
-            if len(name) <= 50:
+            if len(name) <= 50 and len(name) > 0:
                 break
             elif len(name) > 50:
                 print("Recipe name must be less than 50 characters.")
