@@ -302,7 +302,7 @@ def edit_recipe():
 
     # Name attribute
     if column_to_update == "1":
-        column = recipe_to_edit.name
+        column = Recipe.name
         new_value = input("Enter the new name for the recipe: ")
         new_value = new_value.title()
         try:
@@ -317,7 +317,7 @@ def edit_recipe():
             return
     # Cooking time attribute
     elif column_to_update == "2":
-        column = recipe_to_edit.cooking_time
+        column = Recipe.cooking_time
         new_value = input("Enter the new cooking time (in minutes): ")
 
         try:
@@ -336,7 +336,7 @@ def edit_recipe():
             return
     # Ingredients attribute
     elif column_to_update == "3":
-        column = recipe_to_edit.ingredients
+        column = Recipe.ingredients
         ingredients = []
         print("Enter ingredients one by one (type 'done' to finish):")
         try:
@@ -375,7 +375,7 @@ def edit_recipe():
     # Query the updated recipe
     recipe_to_edit = session.query(Recipe).get(user_input)
     # Recalculate difficulty using Recipe's class method
-    recipe_to_edit.calculate_difficulty()
+    recipe_to_edit.calculate_difficulty(recipe_to_edit.cooking_time, recipe_to_edit.ingredients)
 
 def delete_recipe():
     # Check if any recipes exist in the database
