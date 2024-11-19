@@ -200,7 +200,7 @@ def search_by_ingredients():
         user_input = input("\nEnter the indexes of ingredients you wish to see recipes for, separated by spaces. Type 'quit' to exit.\n(Example: 1 5 13): ")
         # Handle quit
         if user_input == 'quit':
-            break
+            return
         # Handle non-numeric input
         elif not all(part.isnumeric() for part in user_input.split()):
             print("Indexes must be numeric. Please try again.")
