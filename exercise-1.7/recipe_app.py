@@ -307,7 +307,7 @@ def edit_recipe():
         new_value = input("Enter the new name for the recipe: ")
         new_value = new_value.title()
         try:
-            if new_value == '':
+            if new_value.strip() == '':
                 print("Name cannot be empty. Returning to main menu.")
                 return
             new_value = str(new_value)
@@ -354,7 +354,7 @@ def edit_recipe():
                         return
                     break
                 # Check if user entered nothing as ingredient
-                elif ingredient == '':
+                elif ingredient.strip() == '':
                     print("Enter a valid ingredient.")
                     continue
                 # Update ingredients list
