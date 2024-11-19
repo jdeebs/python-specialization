@@ -49,12 +49,12 @@ class Recipe(Base):
             f"Ingredients: {ingredients_formatted}\n"
             f"Difficulty level: {self.difficulty}"
             )
-        # Calculate dynamic line width
-        line_width = max(len(line) for line in recipe_details.split("\n"))
-        dashed_line = "-"*line_width
+        # Fixed line width
+        fixed_width = 50
+        dashed_line = "-" * fixed_width
         
         # Combine details with dynamic lines
-        return f"\n{dashed_line}\n{recipe_details}\n{dashed_line}\n"
+        return f"\n{dashed_line}\n{recipe_details}\n{dashed_line}"
     
     # Method to calculate difficulty of a recipe based on number of ingredients and cooking time
     def calculate_difficulty(self, cooking_time, ingredients):
