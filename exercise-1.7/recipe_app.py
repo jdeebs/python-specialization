@@ -344,11 +344,14 @@ def edit_recipe():
             while True:
                 ingredient = input("Ingredient: ")
                 if ingredient.lower() == 'done':
+                    # If ingredients were entered
                     if ingredients:
                         new_value = ", ".join(ingredients)
                         print(f"Ingredients updated to: {new_value}")
+                    # If no ingredients were entered
                     else:
                         print("No ingredients entered. Returning to main menu.")
+                        return
                     break
                 # Check if user entered nothing as ingredient
                 elif ingredient == '':
@@ -359,7 +362,6 @@ def edit_recipe():
 
             # Check if no ingredients were entered
             if not ingredients:
-                print("No ingredients entered. Returning to main menu.")
                 return
         except ValueError:
             print("Error adding ingredients.")
