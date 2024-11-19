@@ -285,7 +285,7 @@ def edit_recipe():
             print("Invalid input. Please enter a valid integer or 'quit'.")
         
     # Retrieve recipe corresponding to ID and store in 'recipe_to_edit' variable
-    recipe_to_edit = session.query(Recipe).get(user_input)
+    recipe_to_edit = session.get(Recipe, user_input)
 
     # Display the recipe details
     print(recipe_to_edit)
