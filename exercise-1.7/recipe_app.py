@@ -426,14 +426,20 @@ def delete_recipe():
                 print("Invalid input. Please enter 'y' or 'n' only.")
 
 def main_menu():
+    # Avoid printing the menu multiple times
+    # If user chooses an invalid input then set to True
+    invalid_input = False
     while True:
-        print("What would you like to do?\nEnter the number 1-4 or type 'quit' to exit the program.")
-        print("1. Create a new recipe")
-        print("2. View all recipes")
-        print("3. Search for recipes by ingredients")
-        print("4. Edit a recipe")
-        print("5. Delete a recipe")
-        choice = input("Your choice: ")
+        if invalid_input == False:
+            print("What would you like to do?")
+            print("1. Create a new recipe")
+            print("2. View all recipes")
+            print("3. Search for recipes by ingredients")
+            print("4. Edit a recipe")
+            print("5. Delete a recipe")
+            choice = input("\nEnter the number 1-5 or type 'quit' to exit the program: ")
+        elif invalid_input == True:
+            choice = input("\nEnter the number 1-5 or type 'quit' to exit the program: ")
 
         if choice == "1":
             create_recipe()
@@ -452,6 +458,8 @@ def main_menu():
             engine.dispose()
             break
         else:
+            # Set to true to not print entire menu again when user enters invalid input
+            invalid_input = True
             print("Invalid input. Please try again.")
 
 main_menu()
