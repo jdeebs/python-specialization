@@ -265,7 +265,7 @@ def edit_recipe():
         recipe_ids.append(recipe[0])
         print(recipe)
 
-    # User picks recipe by ID, if ID doesn't exist exit function
+    # User picks recipe by ID
     while True:
         user_input = input("\nEnter the ID of the recipe you want to edit. Type 'quit' to exit: ")
         # Handle quit
@@ -275,6 +275,8 @@ def edit_recipe():
         # Convert user input to integer to check ID with correct data type
         try:
             user_input = int(user_input)
+            if user_input in recipe_ids:
+                break
             # Handle if ID doesn't exist in recipe_ids
             if user_input not in recipe_ids:
                 print("The entered ID does not exist. Please try again.")
