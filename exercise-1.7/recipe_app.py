@@ -228,10 +228,12 @@ def search_by_ingredients():
             continue
     
         # Check that user input matches available options
-        print("You have selected the ingredients:")
+        if not invalid_indexes:
+            print("You have selected the ingredients:")
         # Loop through selected indexes
-        for ingredient in available_ingredients:
-            print(ingredient)
+            for ingredient in available_ingredients:
+                print(ingredient)
+            break
 
     # List containing conditions for every ingredient searched for
     conditions = []
@@ -431,7 +433,7 @@ def main_menu():
     invalid_input = False
     while True:
         if invalid_input == False:
-            print("What would you like to do?")
+            print("\nWhat would you like to do?")
             print("1. Create a new recipe")
             print("2. View all recipes")
             print("3. Search for recipes by ingredients")
