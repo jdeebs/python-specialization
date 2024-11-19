@@ -36,7 +36,7 @@ class Recipe(Base):
 
     # Method to show a quick string representation of the recipe
     def __repr__(self):
-        return "<Recipe ID: " + str(self.id) + "-" + self.name + ">"
+        return "<ID: " + str(self.id) + ", Name: " + self.name + ">"
     
     # Method to print a formatted string representation of the recipe
     def __str__(self):
@@ -261,16 +261,17 @@ def edit_recipe():
 
     # Iterate over each item in results and display recipes available to user. Filter ids into list to check later
     recipe_ids = []
+    print("Available recipes:")
     for recipe in results:
         recipe_ids.append(recipe[0])
-        print(recipe)
+        print(Recipe.__repr__(recipe))
 
     # User picks recipe by ID
     while True:
         user_input = input("\nEnter the ID of the recipe you want to edit. Type 'quit' to exit: ")
         # Handle quit
         if user_input == 'quit':
-            break
+            return
 
         # Convert user input to integer to check ID with correct data type
         try:
@@ -387,9 +388,10 @@ def delete_recipe():
     results = session.query(Recipe.id, Recipe.name).all()
 
     recipe_ids = []
+    print("Available recipes:")
     for recipe in results:
         recipe_ids.append(recipe[0])
-        print(recipe)
+        print(Recipe.__repr__(recipe))
 
     # Prompt user which recipe to delete by entering corresponding ID
     while True:
