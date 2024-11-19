@@ -304,40 +304,49 @@ def edit_recipe():
     # Name attribute
     if column_to_update == "1":
         column = Recipe.name
-        new_value = input("Enter the new name for the recipe: ")
-        new_value = new_value.title()
+        
         try:
-            if new_value.strip() == '':
-                print("Name cannot be empty. Returning to main menu.")
-                return
-            new_value = str(new_value)
-            print(f"Recipe name updated to {new_value}.")
-            print("\n---------------------------\n")
+            while True:
+                new_value = input("Enter the new name for the recipe: ")
+                new_value = new_value.title()
+                if new_value.strip() == '':
+                    print("Name cannot be empty. Please try again.")
+                    continue
+                else:
+                    new_value = str(new_value)
+                    print(f"Recipe name updated to {new_value}.")
+                    print("\n---------------------------\n")
+                    break
         except ValueError:
             print("Invalid name. Returning to main menu.")
             return
     # Cooking time attribute
     elif column_to_update == "2":
         column = Recipe.cooking_time
-        new_value = input("Enter the new cooking time (in minutes): ")
 
         try:
-            # Convert input to an integer first
-            new_value = int(new_value)
+            while True:
+                new_value = input("Enter the new cooking time (in minutes) or type 'quit' to exit: ")
+                if new_value.lower() == 'quit':
+                    return
+                # Convert input to an integer first
+                new_value = int(new_value)
 
-            # Check if the cooking time is greater than 0
-            if new_value <= 0:
-                print("Cooking time must be greater than 0 minutes. Returning to main menu.")
-                return
-            # If valid
-            print(f"Recipe cooking time updated to {new_value} minutes.")
-            print("\n---------------------------\n")
+                # Check if the cooking time is greater than 0
+                if new_value <= 0:
+                    print("Cooking time must be greater than 0 minutes. Please try again.")
+                    continue
+                # If valid
+                else: 
+                    print(f"Recipe cooking time updated to {new_value} minutes.")
+                    print("\n---------------------------\n")
         except ValueError:
-            print("Invalid cooking time. Please enter a valid integer value for cooking time. Returning to main menu.")
+            print("Invalid cooking time. Must be a valid integer value. Returning to main menu.")
             return
     # Ingredients attribute
     elif column_to_update == "3":
         column = Recipe.ingredients
+
         ingredients = []
         print("Enter ingredients one by one (type 'done' to finish):")
         try:
