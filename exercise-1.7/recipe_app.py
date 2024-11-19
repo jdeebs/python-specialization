@@ -373,7 +373,7 @@ def edit_recipe():
     session.commit()
 
     # Query the updated recipe
-    recipe_to_edit = session.query(Recipe).get(user_input)
+    recipe_to_edit = session.get(Recipe, user_input)
     # Recalculate difficulty using Recipe's class method
     recipe_to_edit.calculate_difficulty(recipe_to_edit.cooking_time, recipe_to_edit.ingredients)
 
@@ -409,7 +409,7 @@ def delete_recipe():
             print("Invalid input. Please enter a valid integer or 'quit'.")
     
     # Retrieve recipe by ID
-    recipe_to_delete = session.query(Recipe).get(user_input)
+    recipe_to_delete = session.get(Recipe, user_input)
 
     # Ask user to confirm choice
     # If user confirms, delete entry from database
