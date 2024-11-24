@@ -270,11 +270,14 @@ def edit_recipe():
         user_input = input("\nEnter the ID of the recipe you want to edit. Type 'quit' to exit: ")
         # Handle quit
         if user_input == 'quit':
-            break
+            return
 
         # Convert user input to integer to check ID with correct data type
         try:
             user_input = int(user_input)
+
+            if user_input is int:
+                break
             # Handle if ID doesn't exist in recipe_ids
             if user_input not in recipe_ids:
                 print("The entered ID does not exist. Please try again.")
