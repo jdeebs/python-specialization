@@ -21,7 +21,9 @@ class Recipe(models.Model):
     cooking_time = models.IntegerField(validators=[
         MinValueValidator(1),
         MaxValueValidator(300)
-    ])
+    ],
+        help_text="Enter cooking time in minutes"
+    )
 
     difficulty = models.CharField(
         max_length=12, choices=difficulty_choices, default='easy')
