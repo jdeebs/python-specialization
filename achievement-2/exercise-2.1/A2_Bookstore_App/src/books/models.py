@@ -1,9 +1,7 @@
 from django.db import models
 
 # Create your models here.
-class Book(models.Model):
-    name = models.CharField(max_length=120)
-    genre_choices = (
+genre_choices = (
         ('classic',
          'Classic'),
         ('romantic',
@@ -17,19 +15,24 @@ class Book(models.Model):
         ('educational',
          'Educational'),
     )
-    # List shown as dropdown to user, default value as 'classic'
-    genre = models.CharField(max_length=12, choices=genre_choices, default='classic')
-
-    book_type_choices = (
+book_type_choices = (
         ('hardcover', 'Hardcover'),
         ('ebook', 'E-Book'),
         ('audiob', 'Audiobook'),
-    )
+)
+class Book(models.Model):
+    name = models.CharField(max_length=120)
+    
+    # List shown as dropdown to user, default value as 'classic'
+    genre = models.CharField(max_length=12, 
+    choices=genre_choices, default='classic')
+
     # List shown as dropdown to user, default value as 'hardcover'
     book_type = models.CharField(max_length=12, choices=book_type_choices, default='hardcover')
 
     # Add tooltip below form field in admin panel
     price = models.FloatField(help_text='in US dollars $')
+    
     author_name = models.CharField(max_length=120)
 
     # Show Book name as string representation when queried
