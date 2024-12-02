@@ -4,14 +4,14 @@ This repository contains the exercises I completed as part of my Python Speciali
 
 ## Achievement 1: Introduction to Python
 
-In this achievement, I will learn the basics of Python programming, including:
+In this achievement, I learned the basics of Python programming, including:
 
 - Data types and structures
 - Operators and functions
 - File handling
 - Exception handling
 
-I will implement object-oriented programming concepts to create a database for a recipe application. Throughout the process, I will practice standard Python programming practices to write simpler, more readable, and robust code.
+I implemented object-oriented programming concepts to create a database for a recipe application. Throughout the process, I practiced standard Python programming practices to write simpler, more readable, and robust code.
 
 ### Exercises Overview
 
@@ -57,6 +57,39 @@ I will implement object-oriented programming concepts to create a database for a
    ```bash
    python add.py
    ```
+
+## Achievement 2: Web Development & Django
+
+In this achievement, I will rebuild the Recipe app from Achievement 1 using the Django web framework, transforming it into a dynamic, multi-user web application. This project focuses on creating a full-stack web application with user authentication, an admin panel, and interactive features for managing and visualizing recipe data.
+
+### Exercises Overview
+
+1. **Getting Started with Django**  
+   - Set up a virtual environment and install Django on various platforms.  
+
+2. **Django Project Setup**  
+   - Create the Django project and apps, and explored settings and the admin panel.  
+
+3. **Django Models**  
+   - Design models for recipes and ingredients and register them in the admin panel.  
+   - Add database records and write automated tests.
+
+4. **Django Views and Templates**  
+   - Define views and render dynamic web pages.  
+   - Develop URLs and routes for smooth navigation.
+
+5. **Django MVT Revisited**  
+   - Update recipe data and develop pages for recipe information.  
+   - Create a welcoming interface.
+
+6. **User Authentication**  
+   - Implement login, logout, and access protection features.
+
+7. **Data Analysis and Visualization**  
+   - Add search functionality and data analytics dashboards.
+
+8. **Deploying a Django Project**  
+   - Package and deploy the application to Heroku, ensuring it is production-ready.
 
 ## Contributing
 
