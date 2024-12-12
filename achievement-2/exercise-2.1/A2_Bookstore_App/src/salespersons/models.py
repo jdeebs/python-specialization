@@ -11,6 +11,8 @@ class Salesperson(models.Model):
     name = models.CharField(max_length=120)
     bio = models.TextField(default="no bio...")
 
+    pic = models.ImageField(upload_to='salespersons', default='no_picture.jpg')
+
     # Show salesperson username as string representation when queried
     def __str__(self):
         return str(self.username)
