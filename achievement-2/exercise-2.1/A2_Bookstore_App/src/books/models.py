@@ -22,19 +22,14 @@ book_type_choices = (
 )
 class Book(models.Model):
     name = models.CharField(max_length=120)
-    
+    author_name = models.CharField(max_length=120)
     # List shown as dropdown to user, default value as 'classic'
     genre = models.CharField(max_length=12, 
     choices=genre_choices, default='classic')
-
     # List shown as dropdown to user, default value as 'hardcover'
     book_type = models.CharField(max_length=12, choices=book_type_choices, default='hardcover')
-
     # Add tooltip below form field in admin panel
     price = models.FloatField(help_text='in US dollars $')
-    
-    author_name = models.CharField(max_length=120)
-
     pic = models.ImageField(upload_to='books', default='no_picture.jpg')
 
     # Show Book name as string representation when queried
