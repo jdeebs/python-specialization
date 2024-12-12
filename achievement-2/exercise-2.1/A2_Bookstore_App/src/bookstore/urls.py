@@ -28,7 +28,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('sales.urls')),
     path('books/', include('books.urls')),
-    path('salespersons/', include('salespersons.html')),
+    path('salespersons/', include('salespersons.urls')),
 ]
 
 # Include media info in urlpatterns
