@@ -27,6 +27,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('sales.urls')),
+    path('books/', include('books.urls'))
 ]
 
 # Include media info in urlpatterns

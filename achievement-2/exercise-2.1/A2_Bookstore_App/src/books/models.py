@@ -35,6 +35,8 @@ class Book(models.Model):
     
     author_name = models.CharField(max_length=120)
 
+    pic = models.ImageField(upload_to='books', default='no_picture.jpg')
+
     # Show Book name as string representation when queried
     def __str__(self):
         return str(self.name)
