@@ -1,8 +1,8 @@
 from django.urls import path
-from .views import books
+from .views import BookListView
 
 app_name = 'books'
 
 urlpatterns = [
-    path('', books),
+    path('list/', BookListView.as_view(), name='list'),
 ]
