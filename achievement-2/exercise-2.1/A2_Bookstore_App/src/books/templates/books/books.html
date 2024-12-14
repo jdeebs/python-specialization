@@ -10,14 +10,24 @@
 </head>
 
 <body>
+    <h1>Book list</h1>
+
     {% comment %}
     Access records from model (object_list) one at a time using for loop
     {% endcomment %}
 
-    {% for object in object_list %}
-    {{object.name}} - {{object.pic}}
-    <br>
-    {% endfor %}
+    <table border="1" cellpadding="5" cellspacing="5">
+        <tr>
+            <td>Book Titles</td>
+            <td>Book Images</td>
+        </tr>
+        {% for object in object_list %}
+        <tr>
+            <td>{{object.name}}</td>
+            <td><img src="{{object.pic.url}}" width="150" height="200" /></td>
+        </tr>
+        {% endfor %}
+    </table>
 </body>
 
 </html>
