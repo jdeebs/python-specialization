@@ -6,6 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'books/css/styles.css' %}">
     <title>Books</title>
 </head>
 
@@ -16,10 +17,10 @@
     Access records from model (object_list) one at a time using for loop
     {% endcomment %}
 
-    <table border="1" cellpadding="5" cellspacing="5">
-        <tr>
-            <td>Book Titles</td>
-            <td>Book Images</td>
+    <table>
+        <tr class="table-header">
+            <th>Book Titles</th>
+            <th>Book Images</th>
         </tr>
         {% for object in object_list %}
         <tr>

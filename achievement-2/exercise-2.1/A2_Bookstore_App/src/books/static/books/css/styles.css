@@ -1,0 +1,29 @@
+body {
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    color: #2E1F27;
+    background-color: #BCAA99;
+}
+
+h1, p {
+  text-align: center;
+}
+
+table {
+  margin: 0 auto;
+  border-spacing: 0;
+  border-radius: 5px;
+}
+
+td {
+  padding-left: 10px;
+}
+
+/* zebra striping */
+
+tbody tr:nth-child(odd) {
+  background-color: rgba(87, 117, 144, 0.75);
+}
+
+tbody tr:nth-child(even) {
+  background-color: rgba(87, 117, 144, 0.5);
+}
