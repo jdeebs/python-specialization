@@ -1,6 +1,6 @@
 from django.shortcuts import render
-# Import to display lists
-from django.views.generic import ListView
+# Import to display lists and details
+from django.views.generic import ListView, DetailView
 
 from .models import Book
 
@@ -9,3 +9,7 @@ from .models import Book
 class BookListView(ListView):
     model = Book
     template_name = 'books/books.html'
+
+class BookDetailView(DetailView):
+    model = Book
+    template_name = 'books/detail.html'
