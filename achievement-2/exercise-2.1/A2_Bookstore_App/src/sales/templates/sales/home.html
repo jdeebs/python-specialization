@@ -11,12 +11,17 @@
 </head>
 
 <body>
-    <h1>Welcome to our Bookstore</h1>
-    <br />
+    <div class="container">
+        <h1>Welcome to our Bookstore</h1>
+        <br />
+        <a href="{%url 'login' %}" class="login-button"> Login </a>
 
-    <img src="{% static 'sales/images/bookstore.jpg'%}" alt="home" width="600" height="300" />
+        <img src="{% static 'sales/images/bookstore.jpg'%}" alt="home" width="600" height="300" />
 
-    <p>Explore a simple, curated selection of books to find your next great read. Start your literary journey with us today!</p>
+        <p>Explore a simple, curated selection of books to find your next great read. Start your literary journey with
+            us
+            today!</p>
+    </div>
 </body>
 
 </html>
