@@ -22,14 +22,15 @@ from django.conf import settings
 # Django helper func static(),
 # allows URL creation from local folder names
 from django.conf.urls.static import static
-from .views import login_view
+from .views import login_view, logout_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('sales.urls')),
     path('books/', include('books.urls')),
     path('salespersons/', include('salespersons.urls')),
-    path('login/', login_view, name='login')
+    path('login/', login_view, name='login'),
+    path('logout/', logout_view, name='logout')
 ]
 
 # Include media info in urlpatterns
