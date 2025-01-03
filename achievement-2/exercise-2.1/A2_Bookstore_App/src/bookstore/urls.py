@@ -15,20 +15,21 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from django.urls import include
+from django.urls import path, include
 
 # Access MEDIA_URL and MEDIA_ROOT variables
 from django.conf import settings
 # Django helper func static(),
 # allows URL creation from local folder names
 from django.conf.urls.static import static
+from .views import login_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('sales.urls')),
     path('books/', include('books.urls')),
     path('salespersons/', include('salespersons.urls')),
+    path('login/', login_view, name='login')
 ]
 
 # Include media info in urlpatterns
