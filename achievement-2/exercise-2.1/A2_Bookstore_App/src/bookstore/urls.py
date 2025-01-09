@@ -28,7 +28,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('sales.urls')),
     path('books/', include('books.urls')),
-    path('salespersons/', include('salespersons.urls')),
     path('login/', login_view, name='login'),
     path('logout/', logout_view, name='logout')
 ]
