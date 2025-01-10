@@ -8,6 +8,6 @@ CHART__CHOICES = (
     ('#3', 'Line chart')
 )
 
-class SalesSearchForm(forms.forms):
+class SalesSearchForm(forms.Form):
     book_title = forms.CharField(max_length=120)
     chart_type = forms.ChoiceField(choices=CHART__CHOICES)
