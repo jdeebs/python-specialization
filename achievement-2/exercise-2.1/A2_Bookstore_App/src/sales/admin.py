@@ -1,6 +1,8 @@
 from django.contrib import admin
-# Import Sale class
 from .models import Sale
 
-# Register your models here.
-admin.site.register(Sale)
+
+@admin.register(Sale)
+class SaleAdmin(admin.ModelAdmin):
+    readonly_fields = ('date_created',)
+    list_display = ('id', 'book', 'quantity', 'price')

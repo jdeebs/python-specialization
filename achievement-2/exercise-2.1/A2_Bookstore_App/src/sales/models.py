@@ -1,6 +1,8 @@
 from django.db import models
 
 # Create your models here.
+
+
 class Sale(models.Model):
     # Book identifier
     # Use string reference to the Book model to avoid circular import error
@@ -12,3 +14,12 @@ class Sale(models.Model):
     price = models.FloatField()
     # Date of sale, automatically set to current date
     date_created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return (
+            f"ID: {self.id}, "
+            f"Book: {self.book}, "
+            f"Quantity: {self.quantity}, "
+            f"Price: {self.price}, "
+            f"Date Created: {self.date_created}"
+        )
