@@ -11,6 +11,13 @@ def home(request):
 @login_required
 def records(request):
     form = SalesSearchForm(request.POST or None)
+
+    # check if the button is clicked
+    if request.method == 'POST':
+        book_title = request.POST.get('book_title')
+        chart_type = request.POST.get('chart_type')
+        print(book_title, chart_type)
+        # pack up data to be sent to template via context dictionary
     context = {
         'form': form,
     }
