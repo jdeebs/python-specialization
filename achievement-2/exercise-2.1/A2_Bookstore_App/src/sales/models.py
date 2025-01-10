@@ -1,4 +1,6 @@
 from django.db import models
+# Connect Book model to access via sales form
+from books.models import Book
 
 # Create your models here.
 
@@ -7,7 +9,7 @@ class Sale(models.Model):
     # Book identifier
     # Use string reference to the Book model to avoid circular import error
     # 'books' is from the name attribute in books apps.py file
-    book = models.ForeignKey("books.Book", on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
     # Number of books sold
     quantity = models.PositiveIntegerField()
     # Total sale price for the sale
@@ -21,5 +23,4 @@ class Sale(models.Model):
             f"Book: {self.book}, "
             f"Quantity: {self.quantity}, "
             f"Price: {self.price}, "
-            f"Date Created: {self.date_created}"
         )

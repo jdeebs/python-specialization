@@ -1,7 +1,10 @@
 from django.shortcuts import render
 # Protect function-based views
 from django.contrib.auth.decorators import login_required
+# To render the sales search form
 from .forms import SalesSearchForm
+# To access sales records
+from .models import Sale
 
 # Create your views here.
 def home(request):
@@ -17,7 +20,32 @@ def records(request):
         book_title = request.POST.get('book_title')
         chart_type = request.POST.get('chart_type')
         print(book_title, chart_type)
-        # pack up data to be sent to template via context dictionary
+
+        print('Exploring querysets:')
+        print('Case 1: Output of Sale.objects.all()')
+        qs = Sale.objects.all()
+        print(qs)
+
+        # Django's ORM uses double underscore (__) 
+        # in querysets to access fields
+        # This is to differentiate between
+        # operations on the database level rather than
+        # the Python object level (dot notation)
+        print('Case 2: Output of Sale.objects.filter(book__name=book_title)')
+        qs = Sale.objects.filter(book__name=book_title)
+        print(qs)
+
+        print('Case 3: Output of qs.values')
+        print(qs.values())
+
+        print('Case 4: Output of qs.values_list()')
+        print(qs.values_list())
+
+        print('Case 5: Output of Sale.objects.get(id=1)')
+        obj = Sale.objects.get(id=1)
+        print(obj)
+
+    # pack up data to be sent to template via context dictionary
     context = {
         'form': form,
     }
