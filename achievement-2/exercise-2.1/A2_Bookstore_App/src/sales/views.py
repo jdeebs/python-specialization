@@ -6,7 +6,7 @@ from .forms import SalesSearchForm
 # To access sales records
 from .models import Sale
 import pandas as pd
-from .utils import get_bookname_from_id
+from .utils import get_bookname_from_id, get_chart
 
 # Create your views here.
 
@@ -22,6 +22,7 @@ def records(request):
     form = SalesSearchForm(request.POST or None)
     # Init dataframe to None
     sales_df = None
+    chart = None
 
     # check if the button is clicked
     if request.method == 'POST':
@@ -35,6 +36,9 @@ def records(request):
             # Convert the ID to name of book
             sales_df['book_id'] = sales_df['book_id'].apply(
                 get_bookname_from_id)
+            # Call get_chart by passing chart_type from
+            # user input, sales dataframe and labels
+            chart = get_chart(chart_type, sales_df, labels=sales_df['date_created'].values)
             # Convert DataFrame to readable in html
             sales_df = sales_df.to_html()
 
@@ -66,5 +70,6 @@ def records(request):
     context = {
         'form': form,
         'sales_df': sales_df,
+        'chart': chart
     }
     return render(request, 'sales/records.html', context)
