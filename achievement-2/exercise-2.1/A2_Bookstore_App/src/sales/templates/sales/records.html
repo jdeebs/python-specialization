@@ -12,6 +12,8 @@
 {% comment %} Ensure sales_df is readable by adding |safe {% endcomment %}
 {% if sales_df %}
 {{sales_df|safe}}
+<br>
+<img src="data:image/png;base64, {{chart|safe}}">
 {% else %}
 <h3>no data</h3>
 {% endif %}
